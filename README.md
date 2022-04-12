@@ -1,2 +1,2 @@
 # SHOPAY
-E - Commerce Platform
+E - Commerce Platform.
