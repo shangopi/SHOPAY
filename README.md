@@ -15,7 +15,7 @@ used theme- https://bootswatch.com/flatly/
 3.run npm install
 4.run npm start
 
-#steps to run frontend application
+#steps to run backend application
 1.open terminal inside backend folder
 2. run npm run devStart
 
