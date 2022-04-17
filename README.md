@@ -18,7 +18,8 @@ used theme- https://bootswatch.com/flatly/
 #steps to run backend application
 1.open terminal inside backend folder
 2.run npm install
-3. run npm run devStart
+3.change your localhost configuration in backend/index.js
+4. run npm run devStart
 
 
 Simply copy and paste react-bootstrap components from here https://react-bootstrap.github.io/components/alerts
