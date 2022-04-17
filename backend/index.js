@@ -16,6 +16,17 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
+app.get('/api/getCustomAttribute',(req,res)=>{
+
+    const id=req.query.id;
+    const sqlSelect="select * from custom_attribute where product_id=?;"
+    db.query(sqlSelect,[id],(err,result)=>{
+       res.send(result);
+       //console.log(result);
+     })
+    
+})
+
 app.get('/api/getProduct',(req,res)=>{
 
     const id=req.query.id;
