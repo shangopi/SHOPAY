@@ -27,27 +27,23 @@ class LoginScreen extends Component {
                             <div style={{ display: 'flex', justifyContent: 'flex-start' }}><h1 className='fw-bold pb-5'><u>LOGIN</u></h1></div>
                             <form >
                                 <div class="input-group mb-3">
-                                    <span class="input-group-text" id="basic-addon1"></span>
+                                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-user"></i></span>
                                     <input type="text" class="form-control" placeholder="Username" aria-label="Username" />
                                 </div>
                                 <div class="input-group mb-3">
-                                    <span class="input-group-text" id="basic-addon1">  </span>
+                                    <span class="input-group-text" id="basic-addon1"> <i class="fas fa-key"></i> </span>
                                     <input type={this.state.showPassword ? "text" : "password"} class="form-control" placeholder="Password" />
                                     <button onClick={() => this.setState({ showPassword: !this.state.showPassword })} class="input-group-text" id="basic-addon1">
-                                        {/* {this.state.showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />} */}
+                                        <i class="fas fa-eye"></i> {/* {this.state.showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />} */}
                                     </button>
                                 </div>
-                                <div style={{ textAlign: 'end' }}> <a href="" style={{ fontStyle: 'italic', color: 'black', fontWeight: 'bold' }} > forgot password? </a> </div>
+                                {/* <div style={{ textAlign: 'end' }}> <a href="" style={{ fontStyle: 'italic', color: 'black', fontWeight: 'bold' }} > forgot password? </a> </div> */}
 
-                                {/* <Form>
-                                <Form.Control className='mb-3' type="text" placeholder=" Username" />
-                                <Form.Control className='' type="password" placeholder="Password" />
-                                <Form.Text style={{ textAlign: 'end' }} className='  '>forgot password?</Form.Text>
-                                </Form> */}
+
                                 <div style={{ fontSize: 20 }} className=' my-3 btn btn-primary bold border-white border-5'>Login</div>
-                                <div>
+                                {/* <div>
                                     Don't have an account? <a href="" className=" link-primary italic" style={{ fontStyle: 'italic' }} > Signup</a>
-                                </div>
+                                </div> */}
                             </form>
                         </div>
                     </Col>

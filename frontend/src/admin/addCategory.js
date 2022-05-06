@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap'
-import Navbar from './navbar';
 
 class AddCatecory extends Component {
     state = {}
@@ -23,8 +22,6 @@ class AddCatecory extends Component {
 
         return (
             <React.Fragment>
-            <Navbar />
-            
             <Container fluid className='mx-5 mt-3'>
                 
                  <Row><Button className='m-3' style={btnColor}> View/Edit/Delete </Button> <Button className='m-3' style={btnColor}> Add </Button> </Row>

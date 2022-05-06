@@ -8,16 +8,19 @@ import ProductScreen from './screens/ProductScreen'
 import CartScreen from './screens/CartScreen'
 import Axios from 'axios'
 import login from './screens/LoginScreen';
-import AddProduct from './admin/addProduct';
-import ViewProduct from './admin/viewProduct';
-import ViewCatecory from './admin/viewCatecory';
-import AddCatecory from './admin/addCategory';
-import AdminHome from './admin/adminHome';
+// import AddProduct from './admin/addProduct';
+// import ViewProduct from './admin/viewProduct';
+// import ViewCatecory from './admin/viewCatecory';
+// import AddCatecory from './admin/addCategory';
+// import AdminHome from './admin/adminHome';
 import Navbar from './admin/navbar';
+
+import AdminApp from './admin/adminApp';
 const App = () => {
   return (
     <Router>
-      <Header />
+      <Route path='/' component={Header} exact />
+      {/* <Route path='/admin' component={Navbar} exact /> */}
       <main className='py-3'>
         <Container>
           <Route path='/' component={HomeScreen} exact />
@@ -25,13 +28,7 @@ const App = () => {
           <Route path='/cart/:id?' component={CartScreen} />
           <Route path='/login' component={login} />
         </Container>
-
-        <Route path='/admin/dashboard' component={AdminHome} exact />
-          <Route path='/admin/addproduct' component={AddProduct} exact />
-          <Route path='/admin/viewproduct' component={ViewProduct} exact />
-          <Route path='/admin/others' component={Navbar} exact />
-          <Route path='/admin/addcategory' component={AddCatecory} exact />
-          <Route path='/admin/viewcategory' component={ViewCatecory} exact />
+        <Route path='/admin/' component={AdminApp} />
       </main>
       <Footer />
     </Router>

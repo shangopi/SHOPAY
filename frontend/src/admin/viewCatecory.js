@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Table } from 'react-bootstrap';
 import products from '../products';
-import Navbar from './navbar';
 
 
 class ViewCategory extends Component {
@@ -17,7 +16,6 @@ class ViewCategory extends Component {
 
         return (
             <div className="App">
-            <Navbar />
 
                 <Table className='mx-5 '>
                     <thead>
@@ -25,6 +23,7 @@ class ViewCategory extends Component {
                             <th>ID</th>
                             <th>Category</th>
                             <th>Products</th>
+                            <th>Delete</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -39,6 +38,7 @@ class ViewCategory extends Component {
                                         <ul>{val.products[1]}</ul>
                                         <ul>{val.products[2]}</ul>
                                     </td>
+                                    <td> <div className=' my-3 btn btn-danger bold border-white border-5'>Delete</div> </td>
                                 </tr>
                             )
                         })}

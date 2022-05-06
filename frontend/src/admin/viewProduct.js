@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { Table } from 'react-bootstrap';
-import Navbar from './navbar';
-
 
 class ViewProduct extends Component {
     state = {  } 
@@ -17,7 +15,6 @@ class ViewProduct extends Component {
 
         return (
             <div className="App">
-            <Navbar />
 
                 <Table  className='mx-5 '>
                     <thead>
@@ -29,6 +26,7 @@ class ViewProduct extends Component {
                             <th>Category</th>
                             <th>Branch Name</th>
                             <th>Description</th>
+                            <th>Delete</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -43,6 +41,7 @@ class ViewProduct extends Component {
                                     <td>{val.category}</td>
                                     <td>{val.branchName}</td>
                                     <td>{val.description}</td>
+                                    <td> <div className=' my-3 btn btn-danger bold border-white border-5'>Delete</div> </td>
                                 </tr>
                             )
                         })}

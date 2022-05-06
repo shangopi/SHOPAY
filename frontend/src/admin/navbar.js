@@ -36,9 +36,7 @@ class AdminNavbar extends Component {
                     <i class="fas fa-table"></i> View Product
                   </Nav.Link>
                 </LinkContainer>
-                <LinkContainer to="/admin/others">
-                  <Nav.Link>Others</Nav.Link>
-                </LinkContainer>
+                
               </Nav>
             </Navbar.Collapse>
           </Container>
