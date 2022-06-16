@@ -6,7 +6,7 @@ import Footer from './components/Footer'
 import HomeScreen from './screens/HomeScreen'
 import ProductScreen from './screens/ProductScreen'
 import CartScreen from './screens/CartScreen'
-import Axios from 'axios'
+//import Axios from 'axios'
 
 const App = () => {
   return (
