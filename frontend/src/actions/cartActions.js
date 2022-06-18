@@ -8,7 +8,7 @@ import { CART_ADD_ITEM, CART_REMOVE_ITEM } from "../constants/cartConstants";
 export const addToCart = (id, qty) => async (dispatch, getState) => {
   //TODO: get data from db by using id
   
-  const {data}  = await axios.get("http://localhost:3001/api/getProductForCart", { params: { id: id } });
+  const {data}  = await axios.get("http://localhost:3001/api/product_page/getProductForCart", { params: { id: id } });
   
   //console.log(data[0].title);
   

@@ -19,7 +19,7 @@ const ProductScreen = ({ history, match }) => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/api/getProduct", {
+      .get("http://localhost:3001/api/product_page/getproduct", {
         params: { id: match.params.id },
       })
       .then((response) => {
@@ -32,7 +32,7 @@ const ProductScreen = ({ history, match }) => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/api/getCustomAttribute", {
+      .get("http://localhost:3001/api/product_page/getCustomAttribute", {
         params: { id: match.params.id },
       })
       .then((response) => {
