@@ -8,6 +8,7 @@ import CheckoutForm from "../components/checkoutForm";
 
 const Checkout = () => {
   const [totalAmount, setTotalAmount] = useState(0);
+  const [deliveryDays, setDeliveryDays] = useState(0);
   const dispatch = useDispatch();
 
   const { cartItems } = useSelector((state) => state.cart);
@@ -22,11 +23,23 @@ const Checkout = () => {
     setTotalAmount(total);
   }, []);
 
+  const handleDeliveryDays = (days) =>{
+    setDeliveryDays(days)
+  }
+
+  const handleSubmit =(e) =>{
+    console.log("submitted");
+    // window.location("/orderstatus")
+    // history.push('/orderstatus')
+  }
+
+
   return (
     <div className="row">
       <div className="col-md-7">
         <h1>Details</h1>
-        <CheckoutForm></CheckoutForm>
+        <CheckoutForm deliveryDays={deliveryDays} handleSubmit={handleSubmit} handleDeliveryDays={handleDeliveryDays}></CheckoutForm>
+     
       </div>
       <div className="col-md-5 p-1">
         <h1>Cart</h1>
@@ -64,7 +77,20 @@ const Checkout = () => {
             ))}
             <tr>
               <td colSpan="5" className="table-active justify-content-end">
-                  <div style={{'textAlign': 'right', 'fontWeight':'bold'}} className="fw-bold">Total : {totalAmount}$</div>
+                <div
+                  style={{ textAlign: "right", fontWeight: "bold" }}
+                  className="fw-bold"
+                >
+                  Total : {totalAmount}$
+                </div>
+                {deliveryDays !== 0 && (
+                  <div
+                    style={{ textAlign: "right", fontWeight: "bold" }}
+                    className="fw-bold"
+                  >
+                    Estimated Delivery Days: {deliveryDays}
+                  </div>
+                )}
               </td>
             </tr>
           </tbody>

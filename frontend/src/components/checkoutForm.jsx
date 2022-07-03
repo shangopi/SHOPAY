@@ -5,7 +5,7 @@ import Message from "../components/Message";
 import { addToCart, removeFromCart } from "../actions/cartActions";
 import { Button, Form, Row } from "react-bootstrap";
 
-const CheckoutForm = () => {
+const CheckoutForm = ({handleDeliveryDays,handleSubmit }) => {
   const districtList = [
     "Batticaloa",
     "Mannar",
@@ -35,17 +35,32 @@ const CheckoutForm = () => {
   ];
 
   const [checked, setChecked] = useState("");
-  const [deliveryMethod, setDeliveryMethod] = useState("pickup");
+  const [deliveryMethod, setDeliveryMethod] = useState("pickup/delivery");
+  const [district, setDistrict] = useState("");
 
   useEffect(() => {
-  }, [checked, deliveryMethod]);
+  }, []);
 
-  const handleSubmit = (e) => {
-    console.log(checked);
-  };
+
+
+  const handleDistrict =(e) =>{
+    e.preventDefault()
+    setDistrict(e.target.value)
+    if (e.target.value === "Colombo"){
+      handleDeliveryDays(3)
+    } else{
+      handleDeliveryDays(5)
+    }
+    
+    console.log(e.target.value);
+  }
+
+  const handleSubmits = () =>{
+    console.log("submitted..");
+  }
 
   return (
-    <Form>
+    <Form onSubmit={handleSubmits()}>
       <Row>
         <Form.Group className="mb-3 col-md-6" controlId="formBasicName">
           <Form.Label>Name</Form.Label>
@@ -79,10 +94,10 @@ const CheckoutForm = () => {
 
         <Form.Group className="mb-3 col-md-6" controlId="formBasicDistrict">
           <Form.Label>District</Form.Label>
-          <Form.Control required className="shadow" as="select">
+          <Form.Control required className="shadow" as="select"  onChange={handleDistrict}>
             <option value="">Select District</option>
             {districtList.map((district) => (
-              <option value={district}>{district}</option>
+              <option key={district} value={district}>{district}</option>
             ))}
           </Form.Control>
         </Form.Group>
@@ -105,7 +120,7 @@ const CheckoutForm = () => {
             name="group-2"
             value="delivery"
             id="default-radio-4"
-            label="Online Payment"
+            label="Delivery"
             onChange={(e) => setDeliveryMethod(e.currentTarget.value)}
           />
         </Form.Group>
@@ -131,11 +146,12 @@ const CheckoutForm = () => {
 
         <Form.Group className="mb-3 col-md-12 mx-2">
           <Form.Check
+          required
             type="radio"
             name="group-1"
             id="default-radio-1"
             value="COD"
-            label="Cash On Delivery"
+            label={`Cash on ${deliveryMethod}`}
             onChange={(e) => setChecked(e.currentTarget.value)}
           />
 
@@ -150,7 +166,7 @@ const CheckoutForm = () => {
         </Form.Group>
 
         {checked === "OP" && (
-          <Form className="mb-3 col ">
+          // <Form className="mb-3 col ">
             <Row>
               <Form.Group
                 className="mb-3 col-md-6"
@@ -175,12 +191,12 @@ const CheckoutForm = () => {
                 <Form.Control type="text" placeholder="676" />
               </Form.Group>
             </Row>
-          </Form>
+          // </Form>
         )}
       </Row>
 
       <Row>
-        <Button type="submit" className="mx-auto" onSubmit={handleSubmit()}>
+        <Button type="submit" className="mx-auto" >
           Checkout
         </Button>
       </Row>
