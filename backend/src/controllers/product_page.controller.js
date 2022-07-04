@@ -3,6 +3,11 @@ const product_model = require("../models/product_page.model");
 
 
 exports.getProductByID = (req, res) => {
+    if (!req.body) {
+        res.status(400).send({
+            message: "Content can not be empty!",
+        });
+    }
     
 
     product_model.getProductByID(req.query.id, (err, data) => {
@@ -59,6 +64,11 @@ exports.getProductByID = (req, res) => {
 
 
 exports.getProductDetails = (req, res) => {
+    if (!req.body) {
+        res.status(400).send({
+            message: "Content can not be empty!",
+        });
+    }
 
     const id = req.query.id;
 
@@ -79,6 +89,11 @@ exports.getProductDetails = (req, res) => {
 }
 
 exports.getAllProducts = (req, res) => {
+    if (!req.body) {
+        res.status(400).send({
+            message: "Content can not be empty!",
+        });
+    }
 
     product_model.getAllProducts(req.query.id, (err, data) => {
         if (err)
@@ -96,6 +111,11 @@ exports.getAllProducts = (req, res) => {
 }
 
 exports.getProductAttribute = (req, res) => {
+    if (!req.body) {
+        res.status(400).send({
+            message: "Content can not be empty!",
+        });
+    }
 
     const id = req.query.id;
     const sqlSelect = "select * from custom_attribute where product_id=?;"
@@ -116,6 +136,11 @@ exports.getProductAttribute = (req, res) => {
 }
 
 exports.getHomeScreenProduct = (req, res) => {
+    if (!req.body) {
+        res.status(400).send({
+            message: "Content can not be empty!",
+        });
+    }
 
     const sqlSelect = "select product.product_id,title,price,image from product LEFT JOIN variant on product.default_varient_id = variant.variant_id  ;"
     db.query(sqlSelect, (err, result) => {
