@@ -40,7 +40,6 @@ exports.getProductByID = (req, res) => {
                         weight: data[0].weight,
                         default_var_id: data[0].default_varient_id,
                         brand: data[0].brand,
-                        images : data.images,
                         description : data[0].description,
                         customAttribute: data1
                     });
@@ -79,6 +78,23 @@ exports.getProductDetails = (req, res) => {
 
 }
 
+exports.getAllProducts = (req, res) => {
+
+    product_model.getAllProducts(req.query.id, (err, data) => {
+        if (err)
+            if (err.kind === "not_found") {
+                res.status(404).send({
+                    message: `Not found varient with id ${req.query.id}.`
+                });
+            } else {
+                res.status(500).send({
+                    message: "Error varient student with id " + req.query.id
+                });}
+        res.send(data);
+    });
+
+}
+
 exports.getProductAttribute = (req, res) => {
 
     const id = req.query.id;
@@ -101,7 +117,7 @@ exports.getProductAttribute = (req, res) => {
 
 exports.getHomeScreenProduct = (req, res) => {
 
-    const sqlSelect = "select * from product LEFT JOIN variant using (product_id);"
+    const sqlSelect = "select product.product_id,title,price,image from product LEFT JOIN variant on product.default_varient_id = variant.variant_id  ;"
     db.query(sqlSelect, (err, result) => {
         if (err) {
             res.send(err);
