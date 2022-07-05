@@ -3,6 +3,11 @@ const product_model = require("../models/product_page.model");
 
 
 exports.getProductByID = (req, res) => {
+    if (!req.body) {
+        res.status(400).send({
+            message: "Content can not be empty!",
+        });
+    }
     
 
     product_model.getProductByID(req.query.id, (err, data) => {
@@ -40,6 +45,9 @@ exports.getProductByID = (req, res) => {
                         weight: data[0].weight,
                         default_var_id: data[0].default_varient_id,
                         brand: data[0].brand,
+                        image : data[0].image,
+                        default_var_price : data[0].price,
+                        default_var_count : data[0].count,
                         description : data[0].description,
                         customAttribute: data1
                     });
@@ -59,6 +67,11 @@ exports.getProductByID = (req, res) => {
 
 
 exports.getProductDetails = (req, res) => {
+    if (!req.body) {
+        res.status(400).send({
+            message: "Content can not be empty!",
+        });
+    }
 
     const id = req.query.id;
 
@@ -79,6 +92,11 @@ exports.getProductDetails = (req, res) => {
 }
 
 exports.getAllProducts = (req, res) => {
+    if (!req.body) {
+        res.status(400).send({
+            message: "Content can not be empty!",
+        });
+    }
 
     product_model.getAllProducts(req.query.id, (err, data) => {
         if (err)
@@ -96,6 +114,11 @@ exports.getAllProducts = (req, res) => {
 }
 
 exports.getProductAttribute = (req, res) => {
+    if (!req.body) {
+        res.status(400).send({
+            message: "Content can not be empty!",
+        });
+    }
 
     const id = req.query.id;
     const sqlSelect = "select * from custom_attribute where product_id=?;"
@@ -116,6 +139,11 @@ exports.getProductAttribute = (req, res) => {
 }
 
 exports.getHomeScreenProduct = (req, res) => {
+    if (!req.body) {
+        res.status(400).send({
+            message: "Content can not be empty!",
+        });
+    }
 
     const sqlSelect = "select product.product_id,title,price,image from product LEFT JOIN variant on product.default_varient_id = variant.variant_id  ;"
     db.query(sqlSelect, (err, result) => {

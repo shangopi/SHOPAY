@@ -1,65 +1,50 @@
 var db = require("../../config/db.config");
 
 const order = function(){
-    this.order_id = order.order_id,
-    this.delivery_method = order.delivery_method,
-    this.payment_method = order.payment_method,
-    this.order_date = order.order_date,
-   // this.order_date = new Date().toLocaleString(),
-   this.status = order.order_status,
-    //this.status = "ordered",
-    this.city = order.city,
-    this.zip_code = order.zip_code,
-    this.address_line1 = order.address_line1,
-    this.address_line2 = order.address_line2,
-    this.address_line3 = order.address_line3,
-    this.total_amount = order.total_amount,
-    this.name = order.name,
-    this.email = order.email,
-    this.mobile = order.mobile,
-    this.order_items = order.order_items
-
 }
 
-order.createOrderForUser = (variant_id, result) => {
+order.createOrderForUser = (new_order, result) => {   
     
-    const sqlSelect = "select variant_id,count,price,image from variant where variant_id=?;"
-    db.query(sqlSelect, [variant_id], (err, res) => {
+    const sqlSelect = "call insert_order_customer (@gdg,?,?,?,?,?,?,?,?,?,?,?,?,?,?);"
+        db.query(sqlSelect, [new_order.delivery_method,new_order.payment_method,new_order.city,new_order.zip_code,new_order.is_user,new_order.address_line1 ,new_order.address_line2,new_order.address_line3,new_order.total,new_order.user_id,new_order.product_arr,new_order.variant_arr,new_order.quantity_arr,new_order.price_arr], (err, res) => {
+            
+            if (err) {
+                console.log("error: ", err);
+                result(err, null);
+                return;
+            }
+            result(null, new_order);
+        })
+    }
+
+order.createOrderForNonUser = (new_order, result) => {   
+    
+const sqlSelect = "call insert_into_order (@gdg,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);"
+    db.query(sqlSelect, [new_order.delivery_method,new_order.payment_method,new_order.city,new_order.zip_code,new_order.is_user,new_order.address_line1 ,new_order.address_line2,new_order.address_line3,new_order.total,new_order.inp_name,new_order.email,new_order.phone,new_order.product_arr,new_order.variant_arr,new_order.quantity_arr,new_order.price_arr], (err, res) => {
+        
         if (err) {
-            result(null, err);
+            console.log("error: ", err);
+            result(err, null);
             return;
         }
-        if (res.length) {
-            
+        result(null, new_order);
+    })
+}
+
+order.getCustomerOrder = (customer_id, result) => {
+    const sqlSelect = "SELECT * FROM shopay.customer_order left join shopay.order using(order_id) where customer_id=?;"
+    db.query(sqlSelect, [customer_id], (err, res) => {
+        if (err) {
+            result(null, err);
+        }
+        else if (res.length) {
             result(null, res);
-            return;
         }
         else {
             result({ kind: "not_found" }, null);
         }
+        console.log(result);
     })
 }
-
-order.createOrderForNonUser = (variant_id, result) => {
-    
-    const sqlSelect = "select variant_id,count,price,image from variant where variant_id=?;"
-    db.query(sqlSelect, [variant_id], (err, res) => {
-        if (err) {
-            result(null, err);
-            return;
-        }
-        if (res.length) {
-            
-            result(null, res);
-            return;
-        }
-        else {
-            result({ kind: "not_found" }, null);
-        }
-    })
-}
-
-
-
 
 module.exports = order;

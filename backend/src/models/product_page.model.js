@@ -6,14 +6,17 @@ const Product = function (product) {
     this.title = product.title;
     this.weight = product.weight;
     this.default_var_id = product.default_var_id;
+    this.default_var_price = product.default_var_price;
     this.customAttribute = product.customAttribute;
+    this.default_var_count = product.default_var_count;
     this.brand = product.brand;
+    this.image = product.image;
     this.description = product.description;
 };
 
 Product.getProductByID = (product_id, result) => {
-    const sqlSelect = "select * from product LEFT JOIN variant on product.default_varient_id = variant.variant_id where product.product_id=?;"
-    // 
+    const sqlSelect = "select * from product LEFT JOIN variant on product.default_varient_id = variant.variant_id where product.product_id=?;";
+
     db.query(sqlSelect, [product_id], (err, res) => {
         if (err) {
             result(null, err);
