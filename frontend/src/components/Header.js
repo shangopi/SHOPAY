@@ -12,7 +12,8 @@ import {
   Drawer,
 } from "@material-ui/core";
 import { Menu } from "@material-ui/icons";
-import Axios from "axios";
+import axios from "axios";
+import config from '../config/config.json';
 
 const useStyles = makeStyles((theme) => ({
   menuSliderContainer: {
@@ -38,13 +39,13 @@ const Header = () => {
   const [subCatList, setSubCatList] = useState([]);
 
   useEffect(() => {
-    Axios.get("http://localhost:3001/api/category/getAllCategory").then(
+    axios.get(`${config.REACT_APP_API}category/getAllCategory`).then(
       (response) => {
         setListItems(response.data);
       }
     );
 
-    Axios.get("http://localhost:3001/api/category/getAllSubCategory").then(
+    axios.get(`${config.REACT_APP_API}category/getAllSubCategory`).then(
       (response) => {
         setSubCatList(response.data);
       }
@@ -63,7 +64,7 @@ const Header = () => {
 
       <div className="accordion accordion-flush" id="accordionFlushExample">
         {listItems.map((listItem) => (
-          <div className="accordion-item p-0 ">
+          <div key={listItem.category_id} className="accordion-item p-0 ">
             <h2
               className="accordion-header bg-primary p-0 "
               id={listItem.category_id}
@@ -96,6 +97,7 @@ const Header = () => {
                   .filter((sub) => sub.category_id === listItem.category_id)
                   .map((subCat) => (
                     <Button
+                    key={subCat.sub_category_name}
                       className="accordion-button collapsed text-white col-12 text-left border-0"
                       variant="outline-dark"
                     >
