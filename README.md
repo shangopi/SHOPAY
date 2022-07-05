@@ -1,5 +1,5 @@
 # SHOPAY
-E - Commerce Platform.
+E - Commerce Platform...
 
 frontend Folder-contain react js codes
 backend Folder-contain all backend codes
