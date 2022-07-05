@@ -1,0 +1,42 @@
+[
+  {
+    "customerid": "190049P",
+    "orders": [
+      {
+        "orderid": "ord1",
+        "productid": ["pro1", "pro2"],
+        "state": "delivered"
+      },
+      {
+        "orderid": "ord2",
+        "productid": ["pro2", "pro3"],
+        "state": "cancelled"
+      },
+      {
+        "orderid": "ord3",
+        "productid": ["pro3", "pro4"],
+        "state": "closed"
+      }
+    ]
+  },
+  {
+    "customerid": "190019B",
+    "orders": [
+      {
+        "orderid": "ord4",
+        "productid": ["pro5", "pro6"],
+        "state": "delivered"
+      },
+      {
+        "orderid": "ord5",
+        "productid": ["pro6", "pro7"],
+        "state": "ordered"
+      },
+      {
+        "orderid": "ord6",
+        "productid": ["pro7", "pro8"],
+        "state": "transfered"
+      }
+    ]
+  }
+]
