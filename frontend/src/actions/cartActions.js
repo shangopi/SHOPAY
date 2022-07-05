@@ -1,14 +1,14 @@
 import axios from "axios";
 import React, { useState, useEffect } from 'react'
 import { CART_ADD_ITEM, CART_REMOVE_ITEM } from "../constants/cartConstants";
+import config from "../config/config.json";
 
 
 
-
-export const addToCart = (id, qty) => async (dispatch, getState) => {
+export const addToCart = (id,title, qty) => async (dispatch, getState) => {
   //TODO: get data from db by using id
   
-  const {data}  = await axios.get("http://localhost:3001/api/product_page/getproduct", { params: { id: id } });
+  const {data}  = await axios.get(`${config.REACT_APP_API}variant/getVarientByID`, { params: { id: id } });
   
   //console.log(data[0].title);
   
@@ -16,8 +16,8 @@ export const addToCart = (id, qty) => async (dispatch, getState) => {
   dispatch({
     type: CART_ADD_ITEM,
     payload: {
-      product: data[0].product_id,
-      name: data[0].title,
+      product: data[0].variant_id,
+      name: title,
       image: data[0].image,
       price: data[0].price,
       countInStock: data[0].count,

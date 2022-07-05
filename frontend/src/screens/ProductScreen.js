@@ -66,12 +66,12 @@ const ProductScreen = ({ history, match }) => {
     // setPrice(price);
     // setStock(count);
     setCurrentVariant(variant);
-    setValues(variant.value)
+    setValues(variant.value);
   };
 
   const [qty, setQty] = useState(1);
   const addToCartHandler = () => {
-    history.push(`/cart/${match.params.id}?qty=${qty}`);
+    history.push(`/cart/${currentVariant.variant_id}/${product.title} ${values.map((type) => ` ${type}  `)}?qty=${qty}`);
   };
 
   return (
@@ -80,15 +80,15 @@ const ProductScreen = ({ history, match }) => {
         Go Back
       </Link>
       <Row>
-        <Col md={6}>
+        <Col md={5}>
           <Image src={currentVariant.image} alt={product.title} width="550px" fluid />
 
           <p className="my-3">Description: {product.description}</p>
         </Col>
-        <Col md={3}>
+        <Col md={4}>
           <ListGroup variant="flush">
             <ListGroup.Item className="py-0">
-              <h3 className="py-0 ">{product.title}</h3>
+              <h3 className="py-0 ">{product.title} {values.map((type) => `- ${type}  `)}</h3>
             </ListGroup.Item>
 
             {/* <ListGroup.Item >Varient : {product.title}</ListGroup.Item> */}
@@ -128,7 +128,7 @@ const ProductScreen = ({ history, match }) => {
           <Card>
             <ListGroup variant="flush">
               {types.map((type,index) => (
-                <ListGroup.Item>
+                <ListGroup.Item key={types[index]}>
                   <Row>
                     <Col>{types[index]}:</Col>
                     <Col>
