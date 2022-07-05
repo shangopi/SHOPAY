@@ -1,7 +1,13 @@
 const category_model = require("../models/category.model");
 exports.getProductCategory = (req, res) => {
+    if (!req.body) {
+        res.status(400).send({
+            message: "Content can not be empty!",
+        });
+    }
 
     category_model.getProductCategory(req.query.id, (err, data) => {
+       
         if (err)
             if (err.kind === "not_found") {
                 res.status(404).send({
@@ -17,6 +23,11 @@ exports.getProductCategory = (req, res) => {
 }
 
 exports.getAllCategory = (req, res) => {
+    if (!req.body) {
+        res.status(400).send({
+            message: "Content can not be empty!",
+        });
+    }
 
     category_model.getAllCategory( (err, data) => {
         if (err)
@@ -34,6 +45,11 @@ exports.getAllCategory = (req, res) => {
 }
 
 exports.getAllSubCategory = (req, res) => {
+    if (!req.body) {
+        res.status(400).send({
+            message: "Content can not be empty!",
+        });
+    }
 
     category_model.getAllSubCategory( (err, data) => {
         if (err)
@@ -51,6 +67,11 @@ exports.getAllSubCategory = (req, res) => {
 }
 
 exports.getAllProduct = (req, res) => {
+    if (!req.body) {
+        res.status(400).send({
+            message: "Content can not be empty!",
+        });
+    }
 
     category_model.getAllProduct( (err, data) => {
         if (err)
