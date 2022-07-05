@@ -108,7 +108,9 @@ exports.getAllProducts = (req, res) => {
                 res.status(500).send({
                     message: "Error varient student with id " + req.query.id
                 });}
-        res.send(data);
+                else{
+                    res.send(data);
+                }
     });
 
 }

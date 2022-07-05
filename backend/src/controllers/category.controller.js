@@ -17,7 +17,65 @@ exports.getProductCategory = (req, res) => {
                 res.status(500).send({
                     message: "Error finding product with id " + req.query.id
                 });}
-        res.send(data);
+                else{
+                    res.send(data);
+                }
+    });
+
+}
+
+exports.getProductByCategory = (req, res) => {
+    if (!req.body) {
+        res.status(400).send({
+            message: "Content can not be empty!",
+        });
+    }
+
+    category_model.getProductByCategory(req.query.id, (err, data) => {
+       
+        if (err)
+            if (err.kind === "not_found") {
+                res.status(404).send({
+                    message: `Not found Category with id ${req.query.id}.`
+                });
+            } else {
+                res.status(500).send({
+                    message: "Error finding Category with id " + req.query.id
+                });}
+            
+        else{
+            res.send(data);
+        }
+
+        
+    });
+
+}
+
+exports.getProductBySubCategory = (req, res) => {
+    if (!req.body) {
+        res.status(400).send({
+            message: "Content can not be empty!",
+        });
+    }
+
+    category_model.getProductBySubCategory(req.query.id, (err, data) => {
+       
+        if (err)
+            if (err.kind === "not_found") {
+                res.status(404).send({
+                    message: `Not found Category with id ${req.query.id}.`
+                });
+            } else {
+                res.status(500).send({
+                    message: "Error finding Category with id " + req.query.id
+                });}
+            
+        else{
+            res.send(data);
+        }
+
+        
     });
 
 }
@@ -39,7 +97,9 @@ exports.getAllCategory = (req, res) => {
                 res.status(500).send({
                     message: "Error varient student with id " + req.query.id
                 });}
-        res.send(data);
+                else{
+                    res.send(data);
+                }
     });
 
 }
@@ -61,7 +121,9 @@ exports.getAllSubCategory = (req, res) => {
                 res.status(500).send({
                     message: "Error varient student with id " + req.query.id
                 });}
-        res.send(data);
+        else{
+            res.send(data);
+        }
     });
 
 }
@@ -83,7 +145,9 @@ exports.getAllProduct = (req, res) => {
                 res.status(500).send({
                     message: "Error varient student with id " + req.query.id
                 });}
-        res.send(data);
+                else{
+                    res.send(data);
+                }
     });
 
 }
