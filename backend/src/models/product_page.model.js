@@ -16,6 +16,7 @@ const Product = function (product) {
 
 Product.getProductByID = (product_id, result) => {
     const sqlSelect = "select * from product LEFT JOIN variant on product.default_varient_id = variant.variant_id where product.product_id=?;";
+
     db.query(sqlSelect, [product_id], (err, res) => {
         if (err) {
             result(null, err);

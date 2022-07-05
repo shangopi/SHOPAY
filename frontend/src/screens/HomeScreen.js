@@ -3,13 +3,14 @@ import { Row, Col } from 'react-bootstrap'
 import Product from '../components/Product'
 //import products from '../products'
 import Axios from 'axios'
+import config from '../config/config.json';
 
 const HomeScreen = () => {
 
   const [products,setProducts]=useState([]);
 
   useEffect(()=>{
-    Axios.get('http://localhost:3001/api/product_page/getHomeScreenProduct').then((response)=>{
+    Axios.get(`${config.REACT_APP_API}product_page/getAllProducts`).then((response)=>{
       setProducts(response.data);
       //console.log(response.data)
     })

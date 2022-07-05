@@ -13,33 +13,56 @@ import {
 import axios from "axios";
 import products from "../products";
 import Message from "../components/Message";
+import config from '../config/config.json';
 
 const ProductScreen = ({ history, match }) => {
   const [product, setProduct] = useState({});
-
-  useEffect(() => {
-    axios
-      .get("http://localhost:3001/api/product_page/getproduct", {
-        params: { id: match.params.id },
-      })
-      .then((response) => {
-        setProduct(response.data[0]);
-        //console.log(response.data[0])
-      });
-  }, [match]);
-
+  const [variants, setVariants] = useState([]);
+  const [types, setTypes] = useState([]);
+  const [img, setImg] = useState("");
   const [custom_attribute, setAttributeList] = useState([]);
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/api/product_page/getCustomAttribute", {
+      .get(`${config.REACT_APP_API}product_page/getProductByID`, {
         params: { id: match.params.id },
       })
       .then((response) => {
-        setAttributeList(response.data);
+        setProduct(response.data);
+        setAttributeList(response.data.customAttribute);
+        setImg(response.data.image);
         //console.log(response.data[0])
       });
+  }, [match]);
+
+
+
+  useEffect(() => {
+    // axios
+    //   .get(`${config.REACT_APP_API}product_page/getCustomAttribute`, {
+    //     params: { id: match.params.id },
+    //   })
+    //   .then((response) => {
+    //     setAttributeList(response.data);
+    //     //console.log(response.data[0])
+    //   });
+
+    async function fetchMyAPI() {
+      let response = await axios.get(
+        `${config.REACT_APP_API}variant/getAllVarientsFullInfo?id=${match.params.id}`
+      );
+
+      setVariants(response.data);
+      // console.log(response.data);
+      setTypes(response.data[0].key);
+    }
+
+    fetchMyAPI();
   }, []);
+
+  const handleImg = (img) => {
+    setImg(img);
+  };
 
   const [qty, setQty] = useState(1);
   const addToCartHandler = () => {
@@ -48,31 +71,42 @@ const ProductScreen = ({ history, match }) => {
 
   return (
     <>
-      <Link className="btn btn-light my-3" to="/">
+      <Link className="btn btn-light my-1" to="/">
         Go Back
       </Link>
       <Row>
         <Col md={6}>
-          <Image src={product.image} alt={product.name} fluid />
+          <Image src={img} alt={product.title} width="550px" fluid />
 
-          <p className="my-5">Description: {product.description}</p>
+          <p className="my-3">Description: {product.description}</p>
         </Col>
         <Col md={3}>
           <ListGroup variant="flush">
-            <ListGroup.Item>
-              <h3>{product.title}</h3>
+            <ListGroup.Item className="py-0">
+              <h3 className="py-0">{product.title}</h3>
             </ListGroup.Item>
 
-            <ListGroup.Item>Varient :{product.name}</ListGroup.Item>
+            <ListGroup.Item>Varient :{product.title}</ListGroup.Item>
 
             <ListGroup.Item>SKU:{product.sku}</ListGroup.Item>
 
             <ListGroup.Item>Weight :{product.weight}g</ListGroup.Item>
 
-            {custom_attribute.map((attribute) => (
+            {(custom_attribute).map((attribute) => (
               <ListGroup.Item key={attribute.attribute_id}>
                 {attribute.name}:{attribute.value}
               </ListGroup.Item>
+            ))}
+
+            {variants.length !== 1 && variants.map((variant) => (
+              <Button
+              key={variant.variant_id}
+                variant="outline-dark"
+                className="my-1 "
+                onClick={() => handleImg(variant.image)}
+              >
+                {variant.value.map((type) => `${type} - `)}
+              </Button>
             ))}
 
             <ListGroup.Item className="my-5 bg-info variant-dark">
