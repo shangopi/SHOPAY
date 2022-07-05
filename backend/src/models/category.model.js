@@ -84,5 +84,44 @@ category.getAllProduct = (result) => {
     })
 }
 
+category.getProductByCategory = (category_id,result) => {
+    //
+    const sqlSelect = "SELECT * FROM  shopay.contains left join category_subCategory using (sub_category_id) left join product using(product_id) LEFT JOIN variant on product.default_varient_id = variant.variant_id where category_id =? ;"
+    db.query(sqlSelect, [category_id],  (err, res) => {
+        
+        if (err) {
+            result(null, err);
+            return;
+        }
+        else if (res.length) {
+            result(null, res);
+            return;
+        }
+        else {
+            result({ kind: "not_found" }, null);
+        }   
+      
+    })
+}
+category.getProductBySubCategory = (category_id,result) => {
+    //
+    const sqlSelect = "SELECT * FROM shopay.contains left join product using(product_id) LEFT JOIN variant on product.default_varient_id = variant.variant_id where sub_category_id =? ;"
+    db.query(sqlSelect, [category_id],  (err, res) => {
+        
+        if (err) {
+            result(null, err);
+            return;
+        }
+        else if (res.length) {
+            result(null, res);
+            return;
+        }
+        else {
+            result({ kind: "not_found" }, null);
+        }   
+      
+    })
+}
+
 
 module.exports = category;
