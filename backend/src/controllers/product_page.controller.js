@@ -46,6 +46,8 @@ exports.getProductByID = (req, res) => {
                         default_var_id: data[0].default_varient_id,
                         brand: data[0].brand,
                         image : data[0].image,
+                        default_var_price : data[0].price,
+                        default_var_count : data[0].count,
                         description : data[0].description,
                         customAttribute: data1
                     });
