@@ -13,14 +13,18 @@ import {
 import axios from "axios";
 import products from "../products";
 import Message from "../components/Message";
-import config from '../config/config.json';
+import config from "../config/config.json";
 
 const ProductScreen = ({ history, match }) => {
   const [product, setProduct] = useState({});
   const [variants, setVariants] = useState([]);
   const [types, setTypes] = useState([]);
-  const [img, setImg] = useState("");
+  const [values, setValues] = useState([]);
+  // const [img, setImg] = useState("");
   const [custom_attribute, setAttributeList] = useState([]);
+  // const [price, setPrice] = useState(0);
+  // const [stock, setStock] = useState(0);
+  const [currentVariant, setCurrentVariant] = useState([]);
 
   useEffect(() => {
     axios
@@ -30,43 +34,44 @@ const ProductScreen = ({ history, match }) => {
       .then((response) => {
         setProduct(response.data);
         setAttributeList(response.data.customAttribute);
-        setImg(response.data.image);
-        //console.log(response.data[0])
+
+
+        axios
+          .get(`${config.REACT_APP_API}variant/getVarientByID`, {
+            params: { id: response.data.default_var_id },
+          })
+          .then((response2) => {
+            setCurrentVariant(response2.data[0]);
+            console.log(response2.data[0]);
+          });
       });
   }, [match]);
 
-
-
   useEffect(() => {
-    // axios
-    //   .get(`${config.REACT_APP_API}product_page/getCustomAttribute`, {
-    //     params: { id: match.params.id },
-    //   })
-    //   .then((response) => {
-    //     setAttributeList(response.data);
-    //     //console.log(response.data[0])
-    //   });
-
     async function fetchMyAPI() {
       let response = await axios.get(
         `${config.REACT_APP_API}variant/getAllVarientsFullInfo?id=${match.params.id}`
       );
 
       setVariants(response.data);
-      // console.log(response.data);
       setTypes(response.data[0].key);
+      setValues(response.data[0].value);
     }
 
     fetchMyAPI();
   }, []);
 
-  const handleImg = (img) => {
-    setImg(img);
+  const handleVariant = (variant) => {
+    // setImg(img);
+    // setPrice(price);
+    // setStock(count);
+    setCurrentVariant(variant);
+    setValues(variant.value);
   };
 
   const [qty, setQty] = useState(1);
   const addToCartHandler = () => {
-    history.push(`/cart/${match.params.id}?qty=${qty}`);
+    history.push(`/cart/${currentVariant.variant_id}/${product.title} ${values.map((type) => ` ${type}  `)}?qty=${qty}`);
   };
 
   return (
@@ -75,53 +80,69 @@ const ProductScreen = ({ history, match }) => {
         Go Back
       </Link>
       <Row>
-        <Col md={6}>
-          <Image src={img} alt={product.title} width="550px" fluid />
+        <Col md={5}>
+          <Image src={currentVariant.image} alt={product.title} width="550px" fluid />
 
           <p className="my-3">Description: {product.description}</p>
         </Col>
-        <Col md={3}>
+        <Col md={4}>
           <ListGroup variant="flush">
             <ListGroup.Item className="py-0">
-              <h3 className="py-0">{product.title}</h3>
+              <h3 className="py-0 ">{product.title} {values.map((type) => `- ${type}  `)}</h3>
             </ListGroup.Item>
 
-            <ListGroup.Item>Varient :{product.title}</ListGroup.Item>
+            {/* <ListGroup.Item >Varient : {product.title}</ListGroup.Item> */}
 
             <ListGroup.Item>SKU:{product.sku}</ListGroup.Item>
 
             <ListGroup.Item>Weight :{product.weight}g</ListGroup.Item>
 
-            {(custom_attribute).map((attribute) => (
+            {custom_attribute.map((attribute) => (
               <ListGroup.Item key={attribute.attribute_id}>
                 {attribute.name}:{attribute.value}
               </ListGroup.Item>
             ))}
 
-            {variants.length !== 1 && variants.map((variant) => (
-              <Button
-              key={variant.variant_id}
-                variant="outline-dark"
-                className="my-1 "
-                onClick={() => handleImg(variant.image)}
-              >
-                {variant.value.map((type) => `${type} - `)}
-              </Button>
-            ))}
+            {variants.length !== 1 &&
+              variants.map((variant) => (
+                <Button
+                  key={variant.variant_id}
+                  variant="outline-dark"
+                  className="my-1 "
+                  onClick={() =>
+                    handleVariant(
+                      variant
+                    )
+                  }
+                >
+                  {variant.value.map((type) => `${type} - `)}
+                </Button>
+              ))}
 
-            <ListGroup.Item className="my-5 bg-info variant-dark">
-              <h2>Price: ${product.price}</h2>
+            <ListGroup.Item className="my-5 bg-dark variant-dark">
+              <h2 className="text-center text-white m-0">Price: ${currentVariant.price}</h2>
             </ListGroup.Item>
           </ListGroup>
         </Col>
         <Col md={3}>
           <Card>
             <ListGroup variant="flush">
+              {types.map((type,index) => (
+                <ListGroup.Item key={types[index]}>
+                  <Row>
+                    <Col>{types[index]}:</Col>
+                    <Col>
+                      <strong>{values[index]}</strong>
+                    </Col>
+                  </Row>
+                </ListGroup.Item>
+              ))}
+
               <ListGroup.Item>
                 <Row>
                   <Col>Price:</Col>
                   <Col>
-                    <strong>${product.price}</strong>
+                    <strong>${currentVariant.price}</strong>
                   </Col>
                 </Row>
               </ListGroup.Item>
@@ -129,11 +150,11 @@ const ProductScreen = ({ history, match }) => {
               <ListGroup.Item>
                 <Row>
                   <Col>Status:</Col>
-                  <Col>{product.count > 0 ? "In Stock" : "Out Of Stock"}</Col>
+                  <Col>{currentVariant.count > 0 ? "In Stock" : "Out Of Stock"}</Col>
                 </Row>
               </ListGroup.Item>
 
-              {product.count > 0 && (
+              {currentVariant.count > 0 && (
                 <ListGroup.Item>
                   <Row>
                     <Col>Qty</Col>
@@ -143,7 +164,7 @@ const ProductScreen = ({ history, match }) => {
                         value={qty}
                         onChange={(e) => setQty(e.target.value)}
                       >
-                        {[...Array(product.count).keys()].map((x) => (
+                        {[...Array(currentVariant.count).keys()].map((x) => (
                           <option key={x + 1} value={x + 1}>
                             {x + 1}
                           </option>
@@ -159,7 +180,7 @@ const ProductScreen = ({ history, match }) => {
                   onClick={addToCartHandler}
                   className="btn-block"
                   type="button"
-                  disabled={product.count === 0}
+                  disabled={currentVariant.count=== 0}
                 >
                   Add To Cart
                 </Button>
