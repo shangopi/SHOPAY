@@ -55,7 +55,6 @@ Product.getCustomAttribute = (product_id, result) => {
     })
 }
 
-module.exports = Product;
 
 Product.getAllProducts = (product_id, result) => {
     const sqlSelect = "select product.product_id,title,price,image from product LEFT JOIN variant on product.default_varient_id = variant.variant_id  ;"
