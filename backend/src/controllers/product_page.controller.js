@@ -45,6 +45,7 @@ exports.getProductByID = (req, res) => {
                         weight: data[0].weight,
                         default_var_id: data[0].default_varient_id,
                         brand: data[0].brand,
+                        image : data[0].image,
                         description : data[0].description,
                         customAttribute: data1
                     });
