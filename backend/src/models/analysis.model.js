@@ -60,7 +60,7 @@ analysis.getAllCustomerDetails = ( result) => {
 }
 
 analysis.BestProductInGivenTime = (start_date,end_date, result) => {
-    const sqlSelect = "SELECT product_id,title,count(product_id) AS sales_count FROM product_order_stats WHERE order_date between ? and ? group by product_id order by sales_count DESC LIMIT 4 ;"
+    const sqlSelect = "SELECT product_id,title,sum(quantity) AS sales_count FROM product_order_stats where order_date between ? and ? group by product_id order by sales_count DESC LIMIT 4 ;"
     db.query(sqlSelect, [start_date,end_date], (err, res) => {
         
         if (err) {
