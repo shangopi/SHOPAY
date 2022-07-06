@@ -11,6 +11,7 @@ const product_page_route=require("./src/routes/product_page.route");
 const varient_route=require("./src/routes/varient.route");
 const category_route=require("./src/routes/category.route");
 const order_route=require("./src/routes/order.route");
+const analysis_route=require("./src/routes/analysis.route");
 
 const db=require("./config/db.config"); 
 
@@ -21,6 +22,8 @@ app.use('/api/product_page',product_page_route);
 app.use('/api/variant',varient_route);
 app.use('/api/category',category_route);
 app.use('/api/order',order_route);
+app.use('/api/analysis',analysis_route);
+
 
 app.get('/',(req,res)=>{
 
