@@ -6,7 +6,9 @@ import Message from '../components/Message'
 import { addToCart, removeFromCart } from '../actions/cartActions'
 
 const CartScreen = ({ match, location, history }) => {
-  const variantId = match.params.id
+
+  const variantId = match.params.variant_id
+  const productId = match.params.product_id
   const title = match.params.title
 
   const qty = location.search ? Number(location.search.split('=')[1]) : 1
@@ -18,9 +20,9 @@ const CartScreen = ({ match, location, history }) => {
   const { cartItems } = cart
   //console.log(cart)
   useEffect(() => {
-    console.log(match);
+    // console.log(match);
     if (variantId) {
-      dispatch(addToCart(variantId,title, qty))
+      dispatch(addToCart(productId,variantId,title, qty))
     }
   }, [dispatch, variantId, qty])
 
@@ -59,7 +61,7 @@ const CartScreen = ({ match, location, history }) => {
                       value={item.qty}
                       onChange={(e) =>
                         dispatch(
-                          addToCart(item.variant, item.name, Number(e.target.value))
+                          addToCart(productId,item.variant, item.name, Number(e.target.value))
                         )
                       }
                     >

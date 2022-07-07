@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { LinkContainer } from "react-router-bootstrap";
-import { Navbar, Nav, Container, Button, Accordion } from "react-bootstrap";
+import {
+  Navbar,
+  Nav,
+  Container,
+  Button,
+  Accordion,
+  Form,
+} from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSquareCaretDown } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -14,6 +21,7 @@ import {
 import { Menu } from "@material-ui/icons";
 import axios from "axios";
 import config from "../config/config.json";
+import Product from "./Product";
 
 const useStyles = makeStyles((theme) => ({
   menuSliderContainer: {
@@ -32,11 +40,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Header = ({ products, setProducts }) => {
+const Header = ({ products, allProducts, setProducts }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [listItems, setListItems] = useState([]);
   const [subCatList, setSubCatList] = useState([]);
+  const [searchBar, setSearchBar] = useState("");
 
   useEffect(() => {
     axios
@@ -70,7 +79,7 @@ const Header = ({ products, setProducts }) => {
         `${config.REACT_APP_API}category/getProductByCategory?id=${category_id}`
       )
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setProducts(response.data);
       });
   };
@@ -83,6 +92,22 @@ const Header = ({ products, setProducts }) => {
       .then((response) => {
         setProducts(response.data);
       });
+  };
+
+  const handleSearch = (e) => {
+    if (e.target.value !== "") {
+      setProducts(
+        allProducts.filter((product) => {
+          return (
+            product.title
+              .toLowerCase()
+              .indexOf(e.target.value.toLowerCase()) !== -1
+          );
+        })
+      );
+    } else {
+      setProducts(allProducts);
+    }
   };
 
   const sideList = () => (
@@ -139,7 +164,7 @@ const Header = ({ products, setProducts }) => {
                       key={subCat.sub_category_name}
                       className="accordion-button collapsed text-white col-12 text-left border-0"
                       variant="outline-dark"
-                      onClick={()=>handleSubCategory(subCat.sub_category_id)}
+                      onClick={() => handleSubCategory(subCat.sub_category_id)}
                     >
                       {subCat.sub_category_name}
                     </Button>
@@ -165,19 +190,30 @@ const Header = ({ products, setProducts }) => {
             </Drawer>
           </Toolbar>
           <LinkContainer to="/">
-            <Navbar.Brand onClick={() => handleAllCategory()}>ShoPay</Navbar.Brand>
+            <Navbar.Brand onClick={() => handleAllCategory()}>
+              ShoPay
+            </Navbar.Brand>
           </LinkContainer>
+          <Form.Control
+            className="shadow  col-md-3"
+            type="text"
+            name="phone"
+            placeholder="Search products, categories"
+            required
+            defaultValue={searchBar}
+            onChange={handleSearch}
+          />
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ml-auto">
-              <LinkContainer to="/cart">
+              <LinkContainer className="text-center" to="/cart">
                 <Nav.Link>
                   <i className="fas fa-shopping-cart"></i> Cart
                 </Nav.Link>
               </LinkContainer>
-              <LinkContainer to="/login">
+              <LinkContainer className="text-center" to="/login">
                 <Nav.Link>
-                  <i className="fas fa-user"></i> Sign In
+                  <i className="fas fa-user"></i> Login
                 </Nav.Link>
               </LinkContainer>
             </Nav>

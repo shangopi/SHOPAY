@@ -5,10 +5,10 @@ import config from "../config/config.json";
 
 
 
-export const addToCart = (id,title, qty) => async (dispatch, getState) => {
+export const addToCart = (productId,variant_id,title, qty) => async (dispatch, getState) => {
   //TODO: get data from db by using id
   
-  const {data}  = await axios.get(`${config.REACT_APP_API}variant/getVarientByID`, { params: { id: id } });
+  const {data}  = await axios.get(`${config.REACT_APP_API}variant/getVarientByID`, { params: { id: variant_id } });
   
   //console.log(data[0].title);
   
@@ -16,6 +16,7 @@ export const addToCart = (id,title, qty) => async (dispatch, getState) => {
   dispatch({
     type: CART_ADD_ITEM,
     payload: {
+      product : productId,
       variant: data[0].variant_id,
       name: title,
       image: data[0].image,
