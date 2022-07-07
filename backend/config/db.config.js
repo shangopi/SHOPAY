@@ -8,6 +8,7 @@ const db=mysql.createConnection({
   database: 'shopay',
   port:'3306'
 })
+
 //connect
 db.connect((err) => {
   if (err) {

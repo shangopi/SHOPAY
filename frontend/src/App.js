@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Redirect,
+  Route,
+  Switch,
+} from "react-router-dom";
 import { Container, Accordion, Row } from "react-bootstrap";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -17,6 +22,7 @@ import Quartly from "./components/admin/pages/salesReport";
 import Analysis from "./components/admin/pages/analysis";
 import HeaderAdmin from "./components/admin/pages/header";
 import AdminLanding from "./screens/landingAdmin";
+import SignUp from "./screens/signup";
 
 const App = () => {
   const [url, setURL] = useState("");
@@ -51,9 +57,14 @@ const App = () => {
         <Route path="/login" component={Login} exact />
       )}
 
-      {window.location.pathname !== "/login" && (
+      {window.location.pathname === "/signup" && (
+        <Route path="/signup" component={SignUp} exact />
+      )}
+
+      {(window.location.pathname !== "/login" && window.location.pathname !== "/signup" ) && (
         <Switch>
-          <Route path="/Admin*" component={AdminLanding} exact/>
+          <Route path="/Admin/*" component={AdminLanding} exact />
+          <Redirect path="/Admin" to="/Admin/analysis" />
           <Route path="/*" component={CustomerLanding} exact />
         </Switch>
       )}

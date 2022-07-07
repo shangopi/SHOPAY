@@ -12,7 +12,6 @@ const Checkout = () => {
   const dispatch = useDispatch();
 
   const { cartItems } = useSelector((state) => state.cart);
-  console.log(cartItems);
 
   useEffect(() => {
     let total = 0;
@@ -42,7 +41,7 @@ const Checkout = () => {
      
       </div>
       <div className="col-md-5 p-1">
-        <h1>Cart</h1>
+        <h1 className="px-3">Cart</h1>
         <table className="table">
           <thead>
             <tr className="py-1 ">
