@@ -5,16 +5,16 @@ import Product from '../components/Product'
 import Axios from 'axios'
 import config from '../config/config.json';
 
-const HomeScreen = () => {
+const HomeScreen = ({products}) => {
 
-  const [products,setProducts]=useState([]);
+  // const [products,setProducts]=useState([]);
 
-  useEffect(()=>{
-    Axios.get(`${config.REACT_APP_API}product_page/getAllProducts`).then((response)=>{
-      setProducts(response.data);
-      //console.log(response.data)
-    })
-  },[])
+  // useEffect(()=>{
+  //   Axios.get(`${config.REACT_APP_API}product_page/getAllProducts`).then((response)=>{
+  //     setProducts(response.data);
+  //     //console.log(response.data)
+  //   })
+  // },[])
 
 
   return (

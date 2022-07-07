@@ -6,7 +6,7 @@ import Message from '../components/Message'
 import { addToCart, removeFromCart } from '../actions/cartActions'
 
 const CartScreen = ({ match, location, history }) => {
-  const productId = match.params.id
+  const variantId = match.params.id
   const title = match.params.title
 
   const qty = location.search ? Number(location.search.split('=')[1]) : 1
@@ -19,10 +19,10 @@ const CartScreen = ({ match, location, history }) => {
   //console.log(cart)
   useEffect(() => {
     console.log(match);
-    if (productId) {
-      dispatch(addToCart(productId,title, qty))
+    if (variantId) {
+      dispatch(addToCart(variantId,title, qty))
     }
-  }, [dispatch, productId, qty])
+  }, [dispatch, variantId, qty])
 
   const removeFromCartHandler = (id) => {
     dispatch(removeFromCart(id))
@@ -44,13 +44,13 @@ const CartScreen = ({ match, location, history }) => {
         ) : (
           <ListGroup variant='flush'>
             {cartItems.map((item) => (
-              <ListGroup.Item key={item.product}>
+              <ListGroup.Item key={item.variant}>
                 <Row>
                   <Col md={2}>
                     <Image src={item.image} alt={item.name} fluid rounded />
                   </Col>
                   <Col md={3}>
-                    <Link to={`/product/${item.product}`}>{item.name}</Link>
+                    <Link to={`/product/${item.variant}`}>{item.name}</Link>
                   </Col>
                   <Col md={2}>${item.price}</Col>
                   <Col md={2}>
@@ -59,7 +59,7 @@ const CartScreen = ({ match, location, history }) => {
                       value={item.qty}
                       onChange={(e) =>
                         dispatch(
-                          addToCart(item.product, item.name, Number(e.target.value))
+                          addToCart(item.variant, item.name, Number(e.target.value))
                         )
                       }
                     >
@@ -74,7 +74,7 @@ const CartScreen = ({ match, location, history }) => {
                     <Button
                       type='button'
                       variant='light'
-                      onClick={() => removeFromCartHandler(item.product)}
+                      onClick={() => removeFromCartHandler(item.variant)}
                     >
                       <i className='fas fa-trash'></i>
                     </Button>

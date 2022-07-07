@@ -47,6 +47,7 @@ const CheckoutForm = ({ handleDeliveryDays, handleSubmit }) => {
     payment_method: "",
     address_line1: authDetails.address_line1,
     address_line2: authDetails.address_line2,
+    address_line3: authDetails.address_line3,
     city: authDetails.city,
     district: authDetails.district,
     zip_code: authDetails.zip_code,
@@ -175,7 +176,7 @@ const CheckoutForm = ({ handleDeliveryDays, handleSubmit }) => {
         {deliveryMethod === "delivery" && (
           <Row className="px-3">
             <Form.Group className="mb-3 col-md-12" controlId="formBasicAddress">
-              <Form.Label>Address</Form.Label>
+              <Form.Label>Address Line 1</Form.Label>
               <Form.Control
                 type="text"
                 name="address_line1"
@@ -186,7 +187,7 @@ const CheckoutForm = ({ handleDeliveryDays, handleSubmit }) => {
               />
             </Form.Group>
             <Form.Group className="mb-3 col-md-12" controlId="formBasicAddress">
-              <Form.Label>Address</Form.Label>
+              <Form.Label>Address Line 2</Form.Label>
               <Form.Control
                 type="text"
                 name="address_line2"
@@ -194,6 +195,17 @@ const CheckoutForm = ({ handleDeliveryDays, handleSubmit }) => {
                 required
                 defaultValue={state.address_line2}
                 onChange={(e) => (state.address_line2 = e.target.value)}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3 col-md-12" controlId="formBasicAddress">
+              <Form.Label>Address Line 3</Form.Label>
+              <Form.Control
+                type="text"
+                name="address_line3"
+                placeholder="Address Line 3"
+                required
+                defaultValue={state.address_line3}
+                onChange={(e) => (state.address_line3 = e.target.value)}
               />
             </Form.Group>
             <Form.Group className="mb-3 col-md-4" controlId="formBasicCity">
