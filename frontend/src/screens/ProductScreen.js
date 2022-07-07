@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {
   Row,
@@ -11,8 +10,6 @@ import {
   Form,
 } from "react-bootstrap";
 import axios from "axios";
-import products from "../products";
-import Message from "../components/Message";
 import config from "../config/config.json";
 
 const ProductScreen = ({ history, match }) => {
@@ -20,10 +17,7 @@ const ProductScreen = ({ history, match }) => {
   const [variants, setVariants] = useState([]);
   const [types, setTypes] = useState([]);
   const [values, setValues] = useState([]);
-  // const [img, setImg] = useState("");
   const [custom_attribute, setAttributeList] = useState([]);
-  // const [price, setPrice] = useState(0);
-  // const [stock, setStock] = useState(0);
   const [currentVariant, setCurrentVariant] = useState([]);
 
   useEffect(() => {
@@ -42,7 +36,7 @@ const ProductScreen = ({ history, match }) => {
           })
           .then((response2) => {
             setCurrentVariant(response2.data[0]);
-            console.log(response2.data[0]);
+            // console.log(response2.data[0]);
           });
       });
   }, [match]);
@@ -62,16 +56,14 @@ const ProductScreen = ({ history, match }) => {
   }, []);
 
   const handleVariant = (variant) => {
-    // setImg(img);
-    // setPrice(price);
-    // setStock(count);
     setCurrentVariant(variant);
+    console.log(variant);
     setValues(variant.value);
   };
 
   const [qty, setQty] = useState(1);
   const addToCartHandler = () => {
-    history.push(`/cart/${currentVariant.variant_id}/${product.title} ${values.map((type) => ` ${type}  `)}?qty=${qty}`);
+    history.push(`/cart/${currentVariant.variant_id}/${product.product_id}/${product.title} ${values.map((type) => ` ${type}  `)}?qty=${qty}`);
   };
 
   return (

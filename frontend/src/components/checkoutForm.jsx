@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import { addToCart, removeFromCart } from "../actions/cartActions";
 import { Button, Form, Row } from "react-bootstrap";
+import axios from "axios";
+import config from '../config/config.json';
 
 const CheckoutForm = ({ handleDeliveryDays, handleSubmit }) => {
   const districtList = [
@@ -38,6 +40,8 @@ const CheckoutForm = ({ handleDeliveryDays, handleSubmit }) => {
   const [district, setDistrict] = useState("Jaffna");
   const { cartItems } = useSelector((state) => state.cart);
   const { authDetails } = useSelector((state) => state.auth);
+  const [userId, setUserId] = useState(1);
+  const [isLogged, setIsLogged] = useState(false);
   const state = {
     firstname: authDetails.first_name,
     lastname: authDetails.last_name,
@@ -54,6 +58,8 @@ const CheckoutForm = ({ handleDeliveryDays, handleSubmit }) => {
     cart_item: { cartItems },
   };
 
+  const orderNonUser = {};
+
   useEffect(() => {
     // console.log("auth", authDetails);
     // console.log("cart", cartItems);
@@ -68,7 +74,7 @@ const CheckoutForm = ({ handleDeliveryDays, handleSubmit }) => {
       handleDeliveryDays(5);
     }
 
-    console.log(e.target.value);
+    // console.log(e.target.value);
   };
 
   const handleSubmits = (e) => {
@@ -88,9 +94,75 @@ const CheckoutForm = ({ handleDeliveryDays, handleSubmit }) => {
       state.zip_code = e.target.zip_code.value;
     }
 
+    if (!isLogged) {
+      orderNonUser.is_user = "No";
+      orderNonUser.inp_name = e.target.firstname.value;
+      orderNonUser.lastname = e.target.lastname.value;
+      orderNonUser.email = e.target.email.value;
+      orderNonUser.phone = e.target.phone.value;
+      orderNonUser.delivery_method = deliveryMethod;
+      orderNonUser.payment_method = checked;
+
+      let variant_arr = "";
+      let product_arr = "";
+      let qty_arr = "";
+      let price_arr = "";
+      cartItems.map((item) => {
+        variant_arr += String(item.variant) + ",";
+        product_arr += String(item.product) + ",";
+        qty_arr += String(item.qty) + ",";
+        price_arr += String(item.price) + ",";
+      });
+      orderNonUser.variant_arr = variant_arr;
+      orderNonUser.product_arr = product_arr;
+      orderNonUser.qty_arr = qty_arr;
+      orderNonUser.price_arr = price_arr;
+      let total = 0;
+      for (let index = 0; index < cartItems.length; index++) {
+        const element = cartItems[index];
+        total += element.price * element.qty;
+      }
+      orderNonUser.total = total;
+      if (deliveryMethod !== "pickup") {
+        orderNonUser.address_line1 = e.target.address_line1.value;
+        orderNonUser.address_line2 = e.target.address_line2.value;
+        orderNonUser.address_line3 = e.target.address_line3.value;
+        orderNonUser.city = e.target.city.value;
+        orderNonUser.district = district;
+        orderNonUser.zip_code = e.target.zip_code.value;
+      } else {
+        orderNonUser.address_line1 = "";
+        orderNonUser.address_line2 = "";
+        orderNonUser.address_line3 = "";
+        orderNonUser.city = "";
+        orderNonUser.district = "";
+        orderNonUser.zip_code = "";
+      }
+    }
+
     console.log("submitted..");
     console.log(deliveryMethod);
     console.log(state);
+    console.log(orderNonUser);
+
+    // let payload = {
+    //   levelId: level,
+    //   courseName: coursename,
+    //   description: description,
+    //   duration: duration,
+    //   credit: credit,
+    // };
+
+    axios
+      .post(`${config.REACT_APP_API}order/createOrderForNonUser`, orderNonUser, {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+      })
+      .then((res) => {
+        console.log("success");
+      })
+      .catch((err) => console.error(err));
     // console.log(state.cart_item);
   };
 

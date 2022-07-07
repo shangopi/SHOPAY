@@ -5,7 +5,7 @@ const order_Controller = require("../controllers/order.controller");
 //for registered users -> creating an order
 router.get("/createOrderForUser", order_Controller.createOrderForUser);
 //for unregistered users -> creating an order
-router.get("/createOrderForNonUser", order_Controller.createOrderForNonUser);
+router.post("/createOrderForNonUser", order_Controller.createOrderForNonUser);
 
 router.get("/getCustomerOrder", order_Controller.getCustomerOrder);
 

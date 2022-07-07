@@ -19,12 +19,14 @@ import config from '../config/config.json';
 const CustomerLanding = () => {
   const dispatch = useDispatch();
   const [products, setProducts] = useState([]);
+  const [allProducts, setAllProducts] = useState([]);
 
   useEffect(() => {
     axios.get(`${config.REACT_APP_API}product_page/getAllProducts`).then(
       (response) => {
         setProducts(response.data);
-        console.log(response.data)
+        setAllProducts(response.data)
+        // console.log(response.data)
       }
     );
   }, []);
@@ -36,7 +38,7 @@ const CustomerLanding = () => {
   return (
     <>
       {window.location.pathname !== "/login" &&
-        window.location.pathname !== "/signup" && <Header products={products} setProducts={setProducts} />}
+        window.location.pathname !== "/signup" && <Header products={products} allProducts={allProducts} setProducts={setProducts} />}
       <Route path="/login" component={Login} exact />
       <Route path="/signup" component={SignUp} exact />
 
@@ -45,7 +47,7 @@ const CustomerLanding = () => {
           <main className="py-3">
             <Container>
               <Route path="/product/:id" component={ProductScreen} />
-              <Route path="/cart/:id/:title?" component={CartScreen} />
+              <Route path="/cart/:variant_id/:product_id/:title?" component={CartScreen} />
               <Route path="/cart" component={CartScreen} exact />
               <Route path="/checkout" component={Checkout} />
               <Route path="/orderstatus" component={OrderStatus} />
