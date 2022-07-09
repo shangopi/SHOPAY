@@ -7,14 +7,16 @@ import CustomerLanding from "./landingCustomer";
 const Login = () => {
   return (
     <div className=" mt-3 mx-md-5">
-            <Route path="/" component={CustomerLanding} exact />
+      <Route path="/" component={CustomerLanding} exact />
       <div className="row p-0 mx-5 justify-content-between">
         <NavLink to="/" className="text-decoration-none">
           <h4 className="m-0 pt-2">SHOPAY</h4>
         </NavLink>
 
         <button className="btn btn-dark rounded">
-          <NavLink className="text-white" to="/signup">SIGNUP</NavLink>
+          <NavLink className="text-white" to="/signup">
+            SIGNUP
+          </NavLink>
         </button>
       </div>
       <div className="row my-3 justify-content-center align-items-center mx-lg-5">

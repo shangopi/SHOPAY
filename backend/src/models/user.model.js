@@ -1,6 +1,7 @@
 var db = require("../../config/db.config");
 
 const User = function (user) {
+    this.cust_id = user.cust_id,
     this.first_name= user.first_name,
     this.last_name = user.last_name,
     this.telephone = user.telephone,
@@ -23,8 +24,8 @@ User.create = (newUser, result) => {
             return;
         }
 
-        console.log("Entry Added: ");
-        result(null, { cust_id: res.cust_id, ...newUser });
+        console.log("Entry Added: ",res.insertId);
+        result(null, { cust_id: res.insertId});
     });
 };
 

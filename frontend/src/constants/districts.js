@@ -7,7 +7,7 @@ export const districtList = [
   "Matale",
   "Nuwara Eliya",
   "Ampara",
-  "Polonnaruwa",
+  "Polonnaruwa",  
   "Trincomalee",
   "Anuradhapura",
   "Vavuniya",
