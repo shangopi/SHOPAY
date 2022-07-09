@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Button, Form, Row } from "react-bootstrap";
 import axios from "axios";
-import config from "../config/config.json";
+
 import { districtList } from "../constants/districts";
 
 const CheckoutForm = ({ handleDeliveryDays, handleSubmit ,handleUrl, setPayload}) => {
@@ -12,7 +12,7 @@ const CheckoutForm = ({ handleDeliveryDays, handleSubmit ,handleUrl, setPayload}
   const { cartItems } = useSelector((state) => state.cart);
   const { authDetails } = useSelector((state) => state.auth);
   const [userId, setUserId] = useState(1);
-  const [isLogged, setIsLogged] = useState(true);
+  const [isLogged, setIsLogged] = useState(false);
   const state = {
     user_id: userId,
     delivery_method: "",
