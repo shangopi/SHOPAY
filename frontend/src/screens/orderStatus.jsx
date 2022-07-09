@@ -2,8 +2,16 @@ import React from "react";
 import { Card } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
-const OrderStatus = () => {
+const OrderStatus = ({ match }) => {
+  const {state} = useLocation();
+
+  useEffect(() => {
+    console.log(state);
+  }, []);
+
   return (
     <div className="d-flex align-items-center justify-content-center">
       <Card className="col-md-8 col-lg-6 shadow-lg py-3">
@@ -86,7 +94,9 @@ const OrderStatus = () => {
           </div>
           <hr />
         </div>
-        <h6 className="text-center">Thank you for your order...! Have a nice day...!</h6>
+        <h6 className="text-center">
+          Thank you for your order...! Have a nice day...!
+        </h6>
       </Card>
     </div>
   );

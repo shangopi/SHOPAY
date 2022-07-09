@@ -1,15 +1,15 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import Message from "../components/Message";
-import { addToCart, removeFromCart } from "../actions/cartActions";
-import { Row } from "react-bootstrap";
 import CheckoutForm from "../components/checkoutForm";
+import config from "../config/config.json";
 
-const Checkout = () => {
+const Checkout = ({ history, match }) => {
   const [totalAmount, setTotalAmount] = useState(0);
   const [deliveryDays, setDeliveryDays] = useState(0);
   const dispatch = useDispatch();
+  // const [url, setUrl] = useState("");
+  // const [payload, setPayload] = useState([])
 
   const { cartItems } = useSelector((state) => state.cart);
 
@@ -22,23 +22,40 @@ const Checkout = () => {
     setTotalAmount(total);
   }, []);
 
-  const handleDeliveryDays = (days) =>{
-    setDeliveryDays(days)
-  }
+  const handleDeliveryDays = (days) => {
+    setDeliveryDays(days);
+  };
 
-  const handleSubmit =(e) =>{
-    console.log("submitted");
-    // window.location("/orderstatus")
-    // history.push('/orderstatus')
-  }
+  const handleUrl = (url) => {
+    // setUrl(url)
+  };
 
+  const handleSubmit = (url, payload) => {
+    axios
+      .post(`${config.REACT_APP_API}order/${url}`, payload, {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+      })
+      .then((res) => {
+        console.log("success");
+        history.push({
+          pathname: '/orderStatus',
+          state: { payload}
+        });
+      })
+      .catch((err) => console.error(err));
+  };
 
   return (
     <div className="row">
       <div className="col-md-7">
         <h1>Details</h1>
-        <CheckoutForm deliveryDays={deliveryDays} handleSubmit={handleSubmit} handleDeliveryDays={handleDeliveryDays}></CheckoutForm>
-     
+        <CheckoutForm
+          deliveryDays={deliveryDays}
+          handleSubmit={handleSubmit}
+          handleDeliveryDays={handleDeliveryDays}
+        ></CheckoutForm>
       </div>
       <div className="col-md-5 p-1">
         <h1 className="px-3">Cart</h1>
@@ -64,7 +81,7 @@ const Checkout = () => {
           </thead>
           <tbody>
             {cartItems.map((item) => (
-              <tr className="py-1" key={item.product}>
+              <tr className="py-1" key={item.variant}>
                 <td className="p-1 text-center align-middle">
                   <img className="rounded img-fluid" src={item.image} alt="" />
                 </td>
