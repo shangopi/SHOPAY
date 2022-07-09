@@ -38,7 +38,7 @@ const CustomerLanding = () => {
   return (
     <>
       {window.location.pathname !== "/login" &&
-        window.location.pathname !== "/signup" && <Header products={products} allProducts={allProducts} setProducts={setProducts} />}
+        window.location.pathname !== "/signup" && <Header allProducts={allProducts} setProducts={setProducts} />}
       <Route path="/login" component={Login} exact />
       <Route path="/signup" component={SignUp} exact />
 

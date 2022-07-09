@@ -31,26 +31,6 @@ const App = () => {
     setURL(window.location.pathname);
   }, [window.location.pathname]);
 
-  //  return (
-  //   <Router>
-  //    <Header />
-  //      <HeaderAdmin />
-  //      <main className="py-3">
-  //        <Container>
-  //          <Route path="/" component={HomeScreen} exact />
-  //          <Route path="/product/:id" component={ProductScreen} />
-  //          <Route path="/cart/:id?" component={CartScreen} />
-  //          <Route path="/checkout" component={Checkout} />
-  //          <Route path="/orderstatus" component={OrderStatus} />
-
-  //          <Route path="/login" component={Login}  />
-  //          <Route path="/report" component={Quartly}/>
-  //          <Route path="/customer" component={Customer}/>
-  //          <Route path="/analysis" component={Analysis}/>
-
-  //        </Container>
-  //      </main>
-
   return (
     <Router>
       {window.location.pathname === "/login" && (

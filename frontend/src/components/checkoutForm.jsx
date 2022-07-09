@@ -1,52 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import Message from "../components/Message";
-import { addToCart, removeFromCart } from "../actions/cartActions";
+import { useSelector } from "react-redux";
 import { Button, Form, Row } from "react-bootstrap";
 import axios from "axios";
-import config from '../config/config.json';
+import config from "../config/config.json";
+import { districtList } from "../constants/districts";
 
-const CheckoutForm = ({ handleDeliveryDays, handleSubmit }) => {
-  const districtList = [
-    "Batticaloa",
-    "Mannar",
-    "Jaffna",
-    "Kilinochchi",
-    "Kandy",
-    "Matale",
-    "Nuwara Eliya",
-    "Ampara",
-    "Polonnaruwa",
-    "Trincomalee",
-    "Anuradhapura",
-    "Vavuniya",
-    "Mullaitivu",
-    "Kurunegala",
-    "Puttalam",
-    "Ratnapura",
-    "Galle",
-    "Hambantota",
-    "Matara",
-    "Badulla",
-    "Monaragala",
-    "Kegalle",
-    "Colombo",
-    "Gampaha",
-    "Kalutara",
-  ];
+const CheckoutForm = ({ handleDeliveryDays, handleSubmit ,handleUrl, setPayload}) => {
   const [checked, setChecked] = useState("");
   const [deliveryMethod, setDeliveryMethod] = useState("pickup/delivery");
   const [district, setDistrict] = useState("Jaffna");
   const { cartItems } = useSelector((state) => state.cart);
   const { authDetails } = useSelector((state) => state.auth);
   const [userId, setUserId] = useState(1);
-  const [isLogged, setIsLogged] = useState(false);
+  const [isLogged, setIsLogged] = useState(true);
   const state = {
-    firstname: authDetails.first_name,
-    lastname: authDetails.last_name,
-    email: authDetails.email,
-    phone: authDetails.telephone,
+    user_id: userId,
     delivery_method: "",
     payment_method: "",
     address_line1: authDetails.address_line1,
@@ -55,7 +23,6 @@ const CheckoutForm = ({ handleDeliveryDays, handleSubmit }) => {
     city: authDetails.city,
     district: authDetails.district,
     zip_code: authDetails.zip_code,
-    cart_item: { cartItems },
   };
 
   const orderNonUser = {};
@@ -73,28 +40,32 @@ const CheckoutForm = ({ handleDeliveryDays, handleSubmit }) => {
     } else {
       handleDeliveryDays(5);
     }
-
-    // console.log(e.target.value);
   };
 
-  const handleSubmits = (e) => {
+  const handleSubmits = async(e) => {
     e.preventDefault();
-    // console.log(e.target.firstname.value);
-    state.firstname = e.target.firstname.value;
-    state.lastname = e.target.lastname.value;
-    state.email = e.target.email.value;
-    state.phone = e.target.phone.value;
-    state.delivery_method = deliveryMethod;
-    state.payment_method = checked;
-    if (deliveryMethod !== "pickup") {
-      state.address_line1 = e.target.address_line1.value;
-      state.address_line2 = e.target.address_line2.value;
-      state.city = e.target.city.value;
-      state.district = district;
-      state.zip_code = e.target.zip_code.value;
+    let variant_arr = "";
+    let product_arr = "";
+    let quantity_arr = "";
+    let price_arr = "";
+    cartItems.map((item) => {
+      variant_arr += String(item.variant) + ",";
+      product_arr += String(item.product) + ",";
+      quantity_arr += String(item.qty) + ",";
+      price_arr += String(item.price) + ",";
+    });
+
+    let total = 0;
+    for (let index = 0; index < cartItems.length; index++) {
+      const element = cartItems[index];
+      total += element.price * element.qty;
     }
 
+    let url = "";
+
     if (!isLogged) {
+      url = "createOrderForNonUser";
+      // handleUrl("createOrderForNonUser")
       orderNonUser.is_user = "No";
       orderNonUser.inp_name = e.target.firstname.value;
       orderNonUser.lastname = e.target.lastname.value;
@@ -102,27 +73,12 @@ const CheckoutForm = ({ handleDeliveryDays, handleSubmit }) => {
       orderNonUser.phone = e.target.phone.value;
       orderNonUser.delivery_method = deliveryMethod;
       orderNonUser.payment_method = checked;
-
-      let variant_arr = "";
-      let product_arr = "";
-      let qty_arr = "";
-      let price_arr = "";
-      cartItems.map((item) => {
-        variant_arr += String(item.variant) + ",";
-        product_arr += String(item.product) + ",";
-        qty_arr += String(item.qty) + ",";
-        price_arr += String(item.price) + ",";
-      });
       orderNonUser.variant_arr = variant_arr;
       orderNonUser.product_arr = product_arr;
-      orderNonUser.qty_arr = qty_arr;
+      orderNonUser.quantity_arr = quantity_arr;
       orderNonUser.price_arr = price_arr;
-      let total = 0;
-      for (let index = 0; index < cartItems.length; index++) {
-        const element = cartItems[index];
-        total += element.price * element.qty;
-      }
       orderNonUser.total = total;
+
       if (deliveryMethod !== "pickup") {
         orderNonUser.address_line1 = e.target.address_line1.value;
         orderNonUser.address_line2 = e.target.address_line2.value;
@@ -138,32 +94,46 @@ const CheckoutForm = ({ handleDeliveryDays, handleSubmit }) => {
         orderNonUser.district = "";
         orderNonUser.zip_code = "";
       }
+    } else {
+      url = "createOrderForUser";
+      // handleUrl("createOrderForUser")
+      state.delivery_method = deliveryMethod;
+      state.payment_method = checked;
+      state.is_user = "Yes";
+      state.user_id = userId;
+      state.variant_arr = variant_arr;
+      state.product_arr = product_arr;
+      state.quantity_arr = quantity_arr;
+      state.price_arr = price_arr;
+      state.total = total;
+      state.phone = "013313";
+
+      if (deliveryMethod !== "pickup") {
+        state.address_line1 = e.target.address_line1.value;
+        state.address_line2 = e.target.address_line2.value;
+        state.address_line3 = e.target.address_line3.value;
+        state.city = e.target.city.value;
+        state.district = district;
+        state.zip_code = e.target.zip_code.value;
+      } else {
+      }
     }
 
     console.log("submitted..");
-    console.log(deliveryMethod);
-    console.log(state);
-    console.log(orderNonUser);
+    console.log("state", state);
+    console.log("nonuser", orderNonUser);
 
-    // let payload = {
-    //   levelId: level,
-    //   courseName: coursename,
-    //   description: description,
-    //   duration: duration,
-    //   credit: credit,
-    // };
+    let payload = [];
+    if (isLogged) {
+      payload = state
+      // setPayload(state)
+    } else {
+      // setPayload(orderNonUser)
+      payload = orderNonUser;
+    }
 
-    axios
-      .post(`${config.REACT_APP_API}order/createOrderForNonUser`, orderNonUser, {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-        },
-      })
-      .then((res) => {
-        console.log("success");
-      })
-      .catch((err) => console.error(err));
-    // console.log(state.cart_item);
+    await handleSubmit(url,payload)
+
   };
 
   return (
@@ -174,12 +144,11 @@ const CheckoutForm = ({ handleDeliveryDays, handleSubmit }) => {
           <Form.Control
             className="shadow"
             type="text"
-            // ref="firstname"
             name="firstname"
             placeholder="First Name"
+            disabled={isLogged}
             required
-            defaultValue={state.firstname}
-            onChange={(e) => (state.firstname = e.target.value)}
+            defaultValue={authDetails.first_name}
           />
         </Form.Group>
 
@@ -190,9 +159,9 @@ const CheckoutForm = ({ handleDeliveryDays, handleSubmit }) => {
             type="text"
             name="lastname"
             placeholder="Last Name"
+            disabled={isLogged}
             required
-            defaultValue={state.lastname}
-            onChange={(e) => (state.lastname = e.target.value)}
+            defaultValue={authDetails.last_name}
           />
         </Form.Group>
 
@@ -203,9 +172,9 @@ const CheckoutForm = ({ handleDeliveryDays, handleSubmit }) => {
             type="email"
             name="email"
             placeholder="Email"
+            disabled={isLogged}
             required
-            defaultValue={state.email}
-            onChange={(e) => (state.email = e.target.value)}
+            defaultValue={authDetails.email}
           />
         </Form.Group>
 
@@ -216,9 +185,9 @@ const CheckoutForm = ({ handleDeliveryDays, handleSubmit }) => {
             type="number"
             name="phone"
             placeholder="Mobile"
+            disabled={isLogged}
             required
-            defaultValue={state.phone}
-            onChange={(e) => (state.phone = e.target.value)}
+            defaultValue={authDetails.telephone}
           />
         </Form.Group>
 
@@ -297,8 +266,6 @@ const CheckoutForm = ({ handleDeliveryDays, handleSubmit }) => {
                 className=""
                 as="select"
                 onChange={handleDistrict}
-
-                // onChange={(e)=>state.district=e.target.value}
               >
                 <option value={district}>{district}</option>
                 {districtList.map((district) => (
@@ -345,7 +312,6 @@ const CheckoutForm = ({ handleDeliveryDays, handleSubmit }) => {
         </Form.Group>
 
         {checked === "OP" && (
-          // <Form className="mb-3 col ">
           <Row>
             <Form.Group className="mb-3 col-md-6" controlId="formBasicCardNum">
               <Form.Label>Credit Card Number</Form.Label>
@@ -367,7 +333,6 @@ const CheckoutForm = ({ handleDeliveryDays, handleSubmit }) => {
               <Form.Control type="text" placeholder="676" />
             </Form.Group>
           </Row>
-          // </Form>
         )}
       </Row>
 

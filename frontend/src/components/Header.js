@@ -10,6 +10,8 @@ import {
 } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSquareCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+
 import {
   Toolbar,
   Box,
@@ -40,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Header = ({ products, allProducts, setProducts }) => {
+const Header = ({ allProducts, setProducts }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [listItems, setListItems] = useState([]);
@@ -106,7 +108,7 @@ const Header = ({ products, allProducts, setProducts }) => {
         })
       );
     } else {
-      setProducts(allProducts);
+      setProducts(allProducts);      
     }
   };
 
@@ -194,15 +196,17 @@ const Header = ({ products, allProducts, setProducts }) => {
               ShoPay
             </Navbar.Brand>
           </LinkContainer>
-          <Form.Control
-            className="shadow  col-md-3"
-            type="text"
-            name="phone"
-            placeholder="Search products, categories"
-            required
-            defaultValue={searchBar}
-            onChange={handleSearch}
-          />
+
+            <Form.Control
+              className="shadow col-md-3"
+              type="text"
+              name="phone"
+              placeholder="Search products, categories.."
+              required
+              defaultValue={searchBar}
+              onChange={handleSearch}
+            />
+
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ml-auto">

@@ -3,7 +3,7 @@ const router = express.Router();
 const order_Controller = require("../controllers/order.controller");
 
 //for registered users -> creating an order
-router.get("/createOrderForUser", order_Controller.createOrderForUser);
+router.post("/createOrderForUser", order_Controller.createOrderForUser);
 //for unregistered users -> creating an order
 router.post("/createOrderForNonUser", order_Controller.createOrderForNonUser);
 
