@@ -60,7 +60,7 @@ exports.login = (req, res) => {
                 const accessToken = jwt.sign(
                     {
                         cust_id: user.cust_id,
-                        usertype: "customer"
+                        usertype: user.role
                     },
                     process.env.JWT_SEC,
                     {expiresIn: "2d"}

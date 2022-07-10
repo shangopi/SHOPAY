@@ -11,7 +11,7 @@ const Checkout = ({ history, match }) => {
 
   const { cartItems } = useSelector((state) => state.cart);
   const { authDetails } = useSelector((state) => state.auth);
-
+  const [cart_dup, setCart_dup]  = useState();
 
   useEffect(() => {
     console.log("auth",authDetails);
@@ -37,9 +37,11 @@ const Checkout = ({ history, match }) => {
       })
       .then((res) => {
         console.log("success");
+        setCart_dup(cartItems);
+        localStorage.removeItem("cartItems");
         history.push({
           pathname: '/orderStatus',
-          state: { payload}
+          state:  [payload,cartItems, deliveryDays]
         });
       })
       .catch((err) => console.error(err));

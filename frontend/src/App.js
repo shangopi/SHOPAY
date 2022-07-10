@@ -33,9 +33,11 @@ const App = () => {
         {window.location.pathname !== "/login" &&
           window.location.pathname !== "/signup" && (
             <Switch>
+              
               <Route path="/Admin/*" component={AdminLanding} exact />
               <Redirect path="/Admin" to="/Admin/analysis" />
               <Route path="/*" component={CustomerLanding} exact />
+              
             </Switch>
           )}
       </Router>

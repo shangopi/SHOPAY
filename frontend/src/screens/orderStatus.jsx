@@ -3,7 +3,7 @@ import { Card } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { Redirect, useLocation } from "react-router-dom";
 import { RotateSpinner } from "react-spinners-kit";
 
 const OrderStatus = ({ match }) => {
@@ -16,9 +16,10 @@ const OrderStatus = ({ match }) => {
     }, 500);
   }, []);
 
-  useEffect(() => {
-    console.log(state);
-  }, []);
+  // useEffect(() => {
+  //   // console.log("order", state[1]);
+  //   console.log(state[0].delivery_method === "pickup");
+  // }, []);
 
   return (
     <>
@@ -34,7 +35,7 @@ const OrderStatus = ({ match }) => {
         >
           <RotateSpinner size={50} color="#5A2675" loading={true} />
         </div>
-      ) : (
+      ) : 1 === 1 ? (
         <div className="d-flex align-items-center justify-content-center">
           <Card className="col-md-8 col-lg-6 shadow-lg py-3">
             <FontAwesomeIcon color="green" icon={faCheckCircle} size="4x" />
@@ -49,72 +50,99 @@ const OrderStatus = ({ match }) => {
               </div>
               <div className="row px-3 d-flex justify-content-between">
                 <div>Name : </div>
-                <div className="text-end font-weight-bold">Abinesh</div>
+                <div className="text-end font-weight-bold">
+                  {state[0].first_name}
+                </div>
               </div>
               <div className="row px-3 d-flex justify-content-between">
                 <div>Mobile : </div>
-                <div className="text-end font-weight-bold">0768432752</div>
+                <div className="text-end font-weight-bold">
+                  {state[0].telephone}
+                </div>
               </div>
               <div className="row px-3 d-flex justify-content-between">
                 <div>Email : </div>
                 <div className="text-end font-weight-bold">
-                  abinesht12@gmail.com
+                  {state[0].email}
                 </div>
               </div>
               <div className="row px-3 d-flex justify-content-between">
                 <div>Pickup/Delivery : </div>
-                <div className="text-end font-weight-bold">Delivery</div>
-              </div>
-              <div className="row px-3 d-flex justify-content-between">
-                <div>Payment Method : </div>
-                <div className="text-end font-weight-bold">Online Transfer</div>
-              </div>
-            </div>
-
-            <div className="py-3">
-              <div className="text-dark font-weight-bold text-uppercase ">
-                Address
-              </div>
-              <div className="row px-3 d-flex justify-content-between">
-                <div>Address : </div>
                 <div className="text-end font-weight-bold">
-                  Anaipanthy, Alvai East
+                  {state[0].delivery_method}
                 </div>
               </div>
               <div className="row px-3 d-flex justify-content-between">
-                <div>City : </div>
-                <div className="text-end font-weight-bold">Nelliady</div>
-              </div>
-              <div className="row px-3 d-flex justify-content-between">
-                <div>District : </div>
-                <div className="text-end font-weight-bold">Jaffna</div>
-              </div>
-              <div className="row px-3 d-flex justify-content-between">
-                <div>Postal Code : </div>
-                <div className="text-end font-weight-bold">40000</div>
-              </div>
-              <div className="row px-3 d-flex justify-content-between">
-                <div>Estimated Delivery Days : </div>
-                <div className="text-end font-weight-bold">3 days</div>
+                <div>Payment Method : </div>
+                <div className="text-end font-weight-bold">
+                  {state[0].payment_method === "COD"
+                    ? `Cash on ${state[0].delivery_method}`
+                    : "Online Payment"}
+                </div>
               </div>
             </div>
 
-            <div className="py-1">
+            {!(state[0].delivery_method === "pickup") && (
+              <div className="py-3">
+                <div className="text-dark font-weight-bold text-uppercase ">
+                  Address
+                </div>
+                <div className="row px-3 d-flex justify-content-between">
+                  <div>Address : </div>
+                  <div className="text-end font-weight-bold">
+                    {state[0].address_line1 +
+                      " , " +
+                      state[0].address_line2 +
+                      " , " +
+                      state[0].address_line3}
+                  </div>
+                </div>
+                <div className="row px-3 d-flex justify-content-between">
+                  <div>City : </div>
+                  <div className="text-end font-weight-bold">
+                    {state[0].city}
+                  </div>
+                </div>
+                <div className="row px-3 d-flex justify-content-between">
+                  <div>District : </div>
+                  <div className="text-end font-weight-bold">
+                    {state[0].district}
+                  </div>
+                </div>
+                <div className="row px-3 d-flex justify-content-between">
+                  <div>Postal Code : </div>
+                  <div className="text-end font-weight-bold">
+                    {state[0].zip_code}
+                  </div>
+                </div>
+                <div className="row px-3 d-flex justify-content-between">
+                  <div>Estimated Delivery Days : </div>
+                  <div className="text-end font-weight-bold">{state[2]}</div>
+                </div>
+              </div>
+            )}
+            <div className="py-2">
               <div className="text-dark font-weight-bold text-uppercase ">
                 Items
               </div>
-              <div className="row px-3 d-flex justify-content-between">
-                <div>Iphone 11 Pro 64gb : </div>
-                <div className="text-end font-weight-bold">2 x 500$</div>
-              </div>
-              <div className="row px-3 d-flex justify-content-between">
-                <div>Sony Speaker : </div>
-                <div className="text-end font-weight-bold">1 x 400$</div>
-              </div>
+              {state[1].map((item) => (
+                <div
+                  className="row px-3 d-flex justify-content-between"
+                  key={item.variant_id}
+                >
+                  <div>{item.name}</div>
+                  <div className="text-end font-weight-bold">
+                    {item.qty} x {item.price}$
+                  </div>
+                </div>
+              ))}
+
               <hr />
               <div className="row px-3 d-flex justify-content-between">
                 <div>Total : </div>
-                <div className="text-end font-weight-bold">1400$</div>
+                <div className="text-end font-weight-bold">
+                  {state[0].total}$
+                </div>
               </div>
               <hr />
             </div>
@@ -123,6 +151,8 @@ const OrderStatus = ({ match }) => {
             </h6>
           </Card>
         </div>
+      ) : (
+        <Redirect to="/" />
       )}
     </>
   );
