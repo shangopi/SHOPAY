@@ -29,9 +29,9 @@ User.create = (newUser, result) => {
     });
 };
 
-//View user Details
-User.getDetailsById = (cus_id, result) => {
-    db.query(`SELECT first_name, last_name, telephone, email, address_line2, address_line2, address_line3, city, zip_code ,district FROM customer WHERE cust_id = ?`,cus_id, (err, res) => {
+//View user Details ID
+User.getDetailsById = (cust_id, result) => {
+    db.query(`SELECT cust_id, first_name, last_name, telephone, email, address_line1, address_line2, address_line3, city, zip_code ,district FROM customer WHERE cust_id = ?`,cust_id, (err, res) => {
         if (err) {
             console.log("error: ", err);
             result(err, null);
@@ -43,6 +43,24 @@ User.getDetailsById = (cus_id, result) => {
             console.log("found user: ", res[0]);
             result(null, res[0]);
             console.log(result);
+            return;
+        }
+        result({ kind: "not_found" }, null);
+    });
+};
+
+//View user Details by email
+User.getDetailsByEmail = (email, result) => {
+    db.query(`SELECT * FROM customer WHERE email = ?`,email, (err, res) => {
+        if (err) {
+            console.log("error: ", err);
+            result(err, null);
+            return;
+        }
+
+        if (res.length) {
+            console.log("found user: ", res[0]);
+            result(null, res[0]);
             return;
         }
         result({ kind: "not_found" }, null);

@@ -8,12 +8,13 @@ const Checkout = ({ history, match }) => {
   const [totalAmount, setTotalAmount] = useState(0);
   const [deliveryDays, setDeliveryDays] = useState(0);
   const dispatch = useDispatch();
-  // const [url, setUrl] = useState("");
-  // const [payload, setPayload] = useState([])
 
   const { cartItems } = useSelector((state) => state.cart);
+  const { authDetails } = useSelector((state) => state.auth);
+
 
   useEffect(() => {
+    console.log("auth",authDetails);
     let total = 0;
     for (let index = 0; index < cartItems.length; index++) {
       const element = cartItems[index];
@@ -26,9 +27,6 @@ const Checkout = ({ history, match }) => {
     setDeliveryDays(days);
   };
 
-  const handleUrl = (url) => {
-    // setUrl(url)
-  };
 
   const handleSubmit = (url, payload) => {
     axios

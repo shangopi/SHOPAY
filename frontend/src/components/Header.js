@@ -108,7 +108,7 @@ const Header = ({ allProducts, setProducts }) => {
         })
       );
     } else {
-      setProducts(allProducts);      
+      setProducts(allProducts);
     }
   };
 
@@ -197,15 +197,15 @@ const Header = ({ allProducts, setProducts }) => {
             </Navbar.Brand>
           </LinkContainer>
 
-            <Form.Control
-              className="shadow col-md-3"
-              type="text"
-              name="phone"
-              placeholder="Search products, categories.."
-              required
-              defaultValue={searchBar}
-              onChange={handleSearch}
-            />
+          <Form.Control
+            className="shadow col-md-3"
+            type="text"
+            name="phone"
+            placeholder="Search products, categories.."
+            required
+            defaultValue={searchBar}
+            onChange={handleSearch}
+          />
 
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
@@ -215,11 +215,19 @@ const Header = ({ allProducts, setProducts }) => {
                   <i className="fas fa-shopping-cart"></i> Cart
                 </Nav.Link>
               </LinkContainer>
-              <LinkContainer className="text-center" to="/login">
-                <Nav.Link>
-                  <i className="fas fa-user"></i> Login
-                </Nav.Link>
-              </LinkContainer>
+              {!localStorage.getItem("authDetails") ? (
+                <LinkContainer className="text-center" to="/login">
+                  <Nav.Link>
+                    <i className="fas fa-user"></i> Login
+                  </Nav.Link>
+                </LinkContainer>
+              ) : (
+                <LinkContainer className="text-center" to="/logout">
+                  <Nav.Link>
+                    <i className="fas fa-lock"></i> Logout
+                  </Nav.Link>
+                </LinkContainer>
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>

@@ -1,5 +1,6 @@
 const userModel = require("../models/user.model");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const saltRounds = 10;
 
 // Create and Save a new account
@@ -39,19 +40,52 @@ exports.create = (req, res) => {
     });
 };
 
+//login
+exports.login = (req, res) => {
+    userModel.getDetailsByEmail(req.body.email, (err, user) => {
+        if (err) {
+            if (err.kind === "not_found") {
+                res.status(404).send({
+                    message: `Not found user with ID ${req.body.email}.`,
+                });
+            } else {
+                res.status(500).send({
+                    message: "Error retrieving User with id " + req.body.email,
+                });
+            }
+        } else {
+            if (!bcrypt.compareSync(req.body.password, user.password)) {
+                res.status(401).json("Wrong credentials!");
+            } else {
+                const accessToken = jwt.sign(
+                    {
+                        cust_id: user.cust_id,
+                        usertype: "customer"
+                    },
+                    process.env.JWT_SEC,
+                    {expiresIn: "2d"}
+                );
+                const { Password, ...others } = user;
+
+                res.status(200).json({ accessToken });
+            }
+        }
+    });
+};
+
 
 //Get customer details
 exports.getDetailsById = (req, res) => {
 
-    userModel.getDetailsById(req.params.cus_id, (err, data) => {
+    userModel.getDetailsById(req.params.cust_id, (err, data) => {
         if (err)
             if (err.kind === "not_found") {
                 res.status(404).send({
-                    message: `Not found user with id ${req.params.cus_id}.`
+                    message: `Not found user with id ${req.params.cust_id}.`
                 });
             } else {
                 res.status(500).send({
-                    message: "Error finding user with id " + req.params.cus_id
+                    message: "Error finding user with id " + req.params.cust_id
                 });}
         else res.send(data);
     });
