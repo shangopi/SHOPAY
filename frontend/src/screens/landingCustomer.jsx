@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
-import { Route } from "react-router-dom";
+import { Redirect, Route } from "react-router-dom";
 import { RotateSpinner } from "react-spinners-kit";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
@@ -58,6 +58,7 @@ const CustomerLanding = () => {
             window.location.pathname !== "/signup" && (
               <main className="py-3">
                 <Container>
+                {/* <Redirect from="/" to="/home" /> */}
                 <Route
                     path="/"
                     exact

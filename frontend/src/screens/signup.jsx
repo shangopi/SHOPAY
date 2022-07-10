@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Form } from "react-bootstrap";
-import { NavLink, Route, useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { NavLink, useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
+import { addAuthDetails } from "../actions/userActions";
 import { districtList } from "../constants/districts";
-import config from "../config/config.json";
 import axios from "axios";
-import Joi from 'joi-browser';
-import CustomerLanding from "./landingCustomer";
+import Joi from "joi-browser";
+import config from "../config/config.json";
 
 const SignUp = () => {
   const [user, setUser] = useState({
@@ -25,20 +26,34 @@ const SignUp = () => {
     password: "",
     password2: "",
   });
-  const [errors, setErrors] = useState([])
+  const [errors, setErrors] = useState([]);
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const schema = {
-    email : Joi.string().required().email({ minDomainAtoms: 2 }),
+    email: Joi.string().required().email({ minDomainAtoms: 2 }),
     telephone: Joi.string().required().length(10).label("Telephone"),
     password: Joi.string().required().min(8).label("Password"),
-    password2: Joi.any().valid(Joi.ref('password')).required().options({ language: { any: { allowOnly: 'must match password' } } }),
-    zip_code : Joi.string().length(5).label("Zip Code")
+    password2: Joi.any()
+      .valid(Joi.ref("password"))
+      .required()
+      .options({ language: { any: { allowOnly: "must match password" } } }),
+    zip_code: Joi.string().length(5).label("Zip Code"),
   };
 
   const validate = () => {
     const options = { abortEarly: false };
-    const { error } = Joi.validate({email : user.email, password : user.password, password2 : user.password2, telephone : user.telephone, zip_code:user.zip_code}, schema, options);
+    const { error } = Joi.validate(
+      {
+        email: user.email,
+        password: user.password,
+        password2: user.password2,
+        telephone: user.telephone,
+        zip_code: user.zip_code,
+      },
+      schema,
+      options
+    );
     const errors = {};
 
     if (error === null) return;
@@ -46,7 +61,6 @@ const SignUp = () => {
 
     return errors;
   };
-
 
   const handleChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
@@ -64,8 +78,8 @@ const SignUp = () => {
         draggable: true,
         progress: 0,
       });
-      setErrors(errors)
-    }else{
+      setErrors(errors);
+    } else {
       setErrors({});
     }
 
@@ -91,11 +105,13 @@ const SignUp = () => {
           draggable: true,
           progress: 0,
         });
-        history.push("/");
-        // history.push({
-        //   pathname: '/orderStatus',
-        //   state: { payload}
-        // });
+        const cust_id = res.data.cust_id;
+        dispatch(addAuthDetails(cust_id));
+        history.push({
+          pathname: "/",
+          state: cust_id ,
+        });
+
       })
       .catch((err) => {
         toast.error("Invalid Signup", {
@@ -111,7 +127,7 @@ const SignUp = () => {
 
   return (
     <div className=" my-3 mx-md-5">
-      <Route path="/" component={CustomerLanding} exact />
+      {/* <Route path="/" component={CustomerLanding} exact /> */}
       <div className="row p-0 mx-5 justify-content-between">
         <NavLink to="/" className="text-decoration-none">
           <h4 className="m-0 pt-2">SHOPAY</h4>

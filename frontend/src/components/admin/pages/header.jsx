@@ -31,7 +31,7 @@ const Header = () => {
                 </Nav.Link>
               </LinkContainer>
 
-              <LinkContainer to="/login">
+              <LinkContainer to="/logout">
                 <Nav.Link>
                   <i className="fas fa-user"></i> Sign Out
                 </Nav.Link>

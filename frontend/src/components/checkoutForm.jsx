@@ -100,12 +100,14 @@ const CheckoutForm = ({ handleDeliveryDays, handleSubmit}) => {
       state.payment_method = checked;
       state.is_user = "Yes";
       state.user_id = authDetails.cust_id;
+      state.first_name = authDetails.first_name;
       state.variant_arr = variant_arr;
       state.product_arr = product_arr;
       state.quantity_arr = quantity_arr;
       state.price_arr = price_arr;
       state.total = total;
-      state.phone = "013313";
+      state.telephone = authDetails.telephone;
+      state.email= authDetails.email;
 
       if (deliveryMethod !== "pickup") {
         state.address_line1 = e.target.address_line1.value;

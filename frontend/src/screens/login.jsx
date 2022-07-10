@@ -96,13 +96,16 @@ const Login = () => {
           if (cusDetails.usertype === "customer") {
             dispatch(addAuthDetails(cust_id));
             history.push({
-              pathname: '/',
-              state: {cust_id}
+              pathname: "/",
+              state: { cust_id },
             });
-          } 
+          } else {
+            localStorage.setItem("admin" , cust_id)
+            history.push({
+              pathname: "/Admin",
+            });
+          }
         } catch (error) {}
-
-
       })
       .catch((err) => {
         toast.error("Invalid Login", {
@@ -118,7 +121,7 @@ const Login = () => {
 
   return (
     <>
-    <Route path="/" component={CustomerLanding} exact />
+      {/* <Route path="/" component={CustomerLanding} exact /> */}
       {showElement ? (
         <div
           className="h-100 d-flex align-items-center justify-content-center"
@@ -133,7 +136,6 @@ const Login = () => {
         </div>
       ) : (
         <div className=" mt-3 mx-md-5">
-          
           <div className="row p-0 mx-5 justify-content-between">
             <NavLink to="/" className="text-decoration-none">
               <h4 className="m-0 pt-2">SHOPAY</h4>
