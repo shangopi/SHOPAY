@@ -5,30 +5,30 @@ import config from "../config/config.json";
 
 
 
-export const addAuthDetails = (cus_id) => async (dispatch) => {
+export const addAuthDetails = (cust_id) => async (dispatch) => {
   //TODO: get data from db by using id
   
-//   const {data}  = await axios.get(`${config.REACT_APP_API}variant/getVarientByID`, { params: { id: id } });
-  
+  const {data}  = await axios.get(`${config.REACT_APP_API}user/getDetailsById/${cust_id}` );
+  console.log("data",data);
   //console.log(data[0].title);
-  const data = {
-    cus_id : cus_id,
-    first_name: "Abii",
-    last_name: "Raja",
-    email: "abinesht12@gmail.com",
-    telephone: "07777777",
-    address_line1: "Anaipanthy",
-    address_line2: "Alvai East",
-    address_line3: "Alvai",
-    city: "Nelliady",
-    district: "Jaffna",
-    zip_code: "40000",
-  };
+  // const data = {
+  //   cus_id : cus_id,
+  //   first_name: "Abii",
+  //   last_name: "Raja",
+  //   email: "abinesht12@gmail.com",
+  //   telephone: "07777777",
+  //   address_line1: "Anaipanthy",
+  //   address_line2: "Alvai East",
+  //   address_line3: "Alvai",
+  //   city: "Nelliady",
+  //   district: "Jaffna",
+  //   zip_code: "40000",
+  // };
 
   dispatch({
     type: ADD_AUTH_DETAILS,
     payload: {
-      cus_id: data.cus_id,
+      cust_id: data.cust_id,
       first_name:  data.first_name,
       last_name:  data.last_name,
       telephone:  data.telephone,

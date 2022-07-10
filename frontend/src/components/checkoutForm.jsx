@@ -5,16 +5,15 @@ import axios from "axios";
 
 import { districtList } from "../constants/districts";
 
-const CheckoutForm = ({ handleDeliveryDays, handleSubmit ,handleUrl, setPayload}) => {
+const CheckoutForm = ({ handleDeliveryDays, handleSubmit}) => {
   const [checked, setChecked] = useState("");
   const [deliveryMethod, setDeliveryMethod] = useState("pickup/delivery");
   const [district, setDistrict] = useState("Jaffna");
   const { cartItems } = useSelector((state) => state.cart);
   const { authDetails } = useSelector((state) => state.auth);
-  const [userId, setUserId] = useState(1);
-  const [isLogged, setIsLogged] = useState(false);
+  const [isLogged, setIsLogged] = useState(localStorage.getItem("authDetails"));
   const state = {
-    user_id: userId,
+    user_id: authDetails.cust_id,
     delivery_method: "",
     payment_method: "",
     address_line1: authDetails.address_line1,
@@ -100,7 +99,7 @@ const CheckoutForm = ({ handleDeliveryDays, handleSubmit ,handleUrl, setPayload}
       state.delivery_method = deliveryMethod;
       state.payment_method = checked;
       state.is_user = "Yes";
-      state.user_id = userId;
+      state.user_id = authDetails.cust_id;
       state.variant_arr = variant_arr;
       state.product_arr = product_arr;
       state.quantity_arr = quantity_arr;
@@ -233,7 +232,6 @@ const CheckoutForm = ({ handleDeliveryDays, handleSubmit ,handleUrl, setPayload}
                 type="text"
                 name="address_line2"
                 placeholder="Address Line 2"
-                required
                 defaultValue={state.address_line2}
                 onChange={(e) => (state.address_line2 = e.target.value)}
               />
@@ -244,7 +242,6 @@ const CheckoutForm = ({ handleDeliveryDays, handleSubmit ,handleUrl, setPayload}
                 type="text"
                 name="address_line3"
                 placeholder="Address Line 3"
-                required
                 defaultValue={state.address_line3}
                 onChange={(e) => (state.address_line3 = e.target.value)}
               />

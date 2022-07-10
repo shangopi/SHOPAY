@@ -108,9 +108,6 @@ const SignUp = () => {
         });
       });
   };
-  // useEffect(() => {
-  //   console.log(user);
-  // }, [user]);
 
   return (
     <div className=" my-3 mx-md-5">
@@ -120,7 +117,11 @@ const SignUp = () => {
           <h4 className="m-0 pt-2">SHOPAY</h4>
         </NavLink>
 
-        <button className="btn btn-dark rounded">LOGIN</button>
+        <button className="btn btn-dark rounded">
+          <NavLink className="text-white" to="/login">
+            LOGIN
+          </NavLink>
+        </button>
       </div>
       <div className="row my-3 justify-content-center align-items-center mx-lg-5">
         <div className="col-lg-7 ">

@@ -4,9 +4,16 @@ import Product from "../components/Product";
 //import products from '../products'
 import Axios from "axios";
 import config from "../config/config.json";
+import { useLocation } from "react-router-dom";
 
 const HomeScreen = ({ products }) => {
+  const { cust_id } = useLocation();
 
+  useEffect(() => {
+    // dispatch(addAuthDetails(cust_id));
+    console.log(cust_id,products);
+
+  }, []);
 
   return (
     <>
