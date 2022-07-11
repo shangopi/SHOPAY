@@ -9,10 +9,16 @@ router.get("/getProductCategoryWithMostOrders", analysis_Controller.getProductCa
 //customer id -> order details of the customer  
 router.get("/getCustomerDetails", analysis_Controller.getCustomerDetails);
 
-//customer id -> order details of the customer  
+//input get requests start_date & end_date -> returns  details of All orders
 router.get("/getAllCustomerDetails", analysis_Controller.getAllCustomerDetails);
 
+//input get requests start_date & end_date -> returns  details of All
 router.get("/BestProductInGivenTime", analysis_Controller.BestProductInGivenTime);
 
+//input product_id -> returns time period - count analysis data for particular product
+router.get("/BestTimeForProduct", analysis_Controller.BestTimeForProduct);
+
+//input product_id -> returns time period - count analysis data for particular product
+router.get("/QuarterlyReport", analysis_Controller.QuarterlyReport);
 
 module.exports = router;
