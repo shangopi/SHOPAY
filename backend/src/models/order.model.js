@@ -47,4 +47,37 @@ order.getCustomerOrder = (customer_id, result) => {
     })
 }
 
+order.getOrderByID = (order_id, result) => {
+    const sqlSelect = "SELECT *, DATE_FORMAT(`shopay`.`order`.`order_date`,'%Y-%m-%d') AS `order_date` FROM shopay.order where order_id=?;"
+
+    db.query(sqlSelect, [order_id], (err, res) => {
+        if (err) {
+            result(null, err);
+        }
+        else if (res.length) {
+            const sql_query = "SELECT product_id,variant_id,quantity,title FROM shopay.order_variant natural join product where order_id =?;"
+            db.query(sql_query, [order_id], (err, res1) => {
+                if (err) {
+                    result(null, err);
+                }
+                else if (res.length) {
+                    res[0].products = res1;
+                    result(null,res);
+
+                }
+                else{
+                    result({ kind: "not_found" }, null);
+                }             
+
+
+            })
+            
+        }
+        else {
+            result({ kind: "not_found" }, null);
+        }
+       
+    })
+}
+
 module.exports = order;
