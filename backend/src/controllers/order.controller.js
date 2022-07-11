@@ -132,13 +132,37 @@ exports.getCustomerOrder = (req, res) => {
         if (err)
             if (err.kind === "not_found") {
                 res.status(404).send({
-                    message: `Not found varient with id ${req.query.id}.`
+                    message: `Not found order with id ${req.query.id}.`
                 });
             } else {
                 res.status(500).send({
-                    message: "Error varient student with id " + req.query.id
+                    message: "Error order with id " + req.query.id
                 });}
         res.send(data);
+    });
+
+}
+
+exports.getOrderByID = (req, res) => {
+    if (!req.body) {
+        res.status(400).send({
+            message: "Content can not be empty!",
+        });
+    }
+
+    order_model.getOrderByID(req.query.id, (err, data) => {
+        if (err)
+            if (err.kind === "not_found") {
+                res.status(404).send({
+                    message: `Not found order with id ${req.query.id}.`
+                });
+            } else {
+                res.status(500).send({
+                    message: "Error order with id " + req.query.id
+                });}
+       else{
+        res.send(data);
+       }
     });
 
 }
