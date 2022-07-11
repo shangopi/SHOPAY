@@ -42,7 +42,7 @@ analysis.getCustomerDetails = (cust_id, result) => {
 }
 
 analysis.QuarterlyReport = (year, result) => {
-    const sqlSelect = "SELECT order_id,status,total_amount,DATE_FORMAT(order_date ,'%Y-%m-%d') AS order_date FROM shopay.customer_order inner join shopay.order using (order_id) where customer_id = ? ORDER BY order_id DESC ;"
+    const sqlSelect = "SELECT product_id,title, YEAR(order_date) AS yr ,SUM(CASE WHEN MONTH(order_date) IN (1,2,3) THEN quantity END) AS Q1  ,SUM(CASE WHEN MONTH(order_date) IN (4,5,6) THEN quantity END) AS Q2  ,SUM(CASE WHEN MONTH(order_date) IN (7,8,9) THEN quantity END) AS Q3  ,SUM(CASE WHEN MONTH(order_date) IN (10,11,12) THEN quantity END) AS Q4, SUM(CASE WHEN MONTH(order_date) IN (1,2,3,4,5,6,7,8,9,10,11,12) THEN quantity END) AS total FROM shopay.product_order_stats natural join product where YEAR(order_date) =? GROUP BY YEAR(order_date),product_id ;"
     db.query(sqlSelect, [year], (err, res) => {
         
         if (err) {
