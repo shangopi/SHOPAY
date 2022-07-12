@@ -1,14 +1,24 @@
-import dummy from './topCategory1.json';
-import React, { useState } from 'react';
+import React, { useState ,useEffect} from 'react';
 import { Table, Accordion, Card, Button } from 'react-bootstrap';
-
+import axios from 'axios';
 
 const Category = () => {
 
 
-    const [category, setcategory] = useState(dummy);
-
+    const [category, setcategory] = useState([]);
+    
     console.log(category);
+
+
+    useEffect(() => {
+        axios
+          .get(`http://localhost:3001/api/analysis/getProductCategoryWithMostOrders`)
+          .then((res) => {
+            setcategory(res.data);
+            console.log("all categories= ", res.data);
+          })
+          .catch((err) => console.log(err));
+      }, []);
 
     return (<>
         <div >
@@ -31,9 +41,9 @@ const Category = () => {
                             <tbody>
                                 {category.length > 0 && category.map((c, inde) =>
                                     <tr key={inde}>
-                                        <td>{c.cid}</td>
-                                        <td>{c.categoryName}</td>
-                                        <td>{c.order}</td>
+                                        <td>{c.category_id}</td>
+                                        <td>{c.category_name}</td>
+                                        <td>{c.orders_count}</td>
                                     </tr>
                                 )}
                             </tbody>

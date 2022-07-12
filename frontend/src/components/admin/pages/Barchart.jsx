@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Line, Bar } from 'react-chartjs-2';
-import { Form, Button, Row, Col } from "react-bootstrap";
-import dummydata from './barchart1.json';
+import { Form, Button, Row, Col ,Alert} from "react-bootstrap";
+import axios from 'axios';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -42,44 +42,54 @@ export const options = {
 const ChartView1 = () => {
     const [startDate, setStartDate] = useState();
     const [endDate, setEndDate] = useState();
-
-    const temp = [];
-    dummydata.map(data => temp.push(data.pname));
-
-    const temp1 = [];
-    dummydata.map(dataa => temp1.push(dataa.count));
-
-    const [labels, setlabels] = useState(temp);
-    const [data1, setdata1] = useState(temp1);
-
-    const [dummy, setdummy] = useState(dummydata);
-    console.log(temp);
-    console.log(temp1);
+    const [labels, setlabels] = useState([]);
+    const [entry, setEntry] = useState([]);
+    const [err, seterr] = useState("Select Time Period");
+    const [isError, setisError] = useState(true);
 
     const data = {
         labels,
         datasets: [
             {
                 label: 'orders',
-                data: temp1,
+                data: entry,
                 borderColor: 'rgb(35,165,179)',
                 backgroundColor: 'rgb(35,165,179)',
             }
         ],
     };
+
     const handleStartDate = (e) => {
         setStartDate(e.target.value);
-        console.log(e.target.value);
     }
     const handleEndDate = (e) => {
         setEndDate(e.target.value);
-        console.log(e.target.value);
     }
 
     const handleSubmit = (e) => {
-        e.preventDefault()
-        console.log(e);
-    }
+        setEndDate();
+        setStartDate();
+        setlabels([]);
+        setEntry([]);
+        e.preventDefault();
+        axios
+            .get(
+                `http://localhost:3001/api/analysis/BestProductInGivenTime?start_date=${startDate}&end_date=${endDate}`
+            )
+            .then((res) => {
+                seterr("");
+                setisError(false);
+                res.data.map(p => { setlabels(prev => [...prev, p.title]) });
+                res.data.map(p => { setEntry(prev => [...prev, p.sales_count]) });
+            })
+            .catch((err) => {
+                setisError(true);
+                seterr("Your input date is incorrect / No orders available");
+                console.log("err = ", err);
+            });
+
+    };
+    //
 
     return <>
 
@@ -92,7 +102,7 @@ const ChartView1 = () => {
                     <Form.Group controlId="duedate">
                         <Form.Control
                             type="date"
-                            name="duedate"
+                            name="startdate"
                             placeholder="Due date"
                             onChange={handleStartDate}
                         />
@@ -103,7 +113,7 @@ const ChartView1 = () => {
                     <Form.Group controlId="duedate">
                         <Form.Control
                             type="date"
-                            name="duedate"
+                            name="enddate"
                             placeholder="Due date"
                             onChange={handleEndDate}
                         />
@@ -119,7 +129,9 @@ const ChartView1 = () => {
             </Row>
 
         </Form>
-        <Bar options={options} data={data} />
+        {isError  ?   (<Alert variant="danger"> {err}</Alert>) : (<Bar options={options} data={data} />)}
+        
+        
     </>
 }
 
