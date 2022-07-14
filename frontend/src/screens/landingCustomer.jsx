@@ -30,7 +30,6 @@ const CustomerLanding = () => {
       });
   }, []);
 
-
   return (
     <>
       {!loader ? (
@@ -58,23 +57,29 @@ const CustomerLanding = () => {
             window.location.pathname !== "/signup" && (
               <main className="py-3">
                 <Container>
-                {/* <Redirect from="/" to="/home" /> */}
-                <Route
-                    path="/"
-                    exact
-                    component={() => <HomeScreen products={products} />}
-                  />
-                  <Route path="/product/:id" component={ProductScreen} />
-                  <Route
-                    path="/cart/:variant_id/:product_id/:title?"
-                    component={CartScreen}
-                  />
-                  <Route path="/cart" component={CartScreen} exact />
-                  <Route path="/checkout" component={Checkout} />
-                  <Route path="/orderstatus" component={OrderStatus} />
-                  <Route path="/logout" component={Logout} />
-                  {/* <Route path="/notfound" component={PageNotFound} /> */}
-
+                <Route path="/logout" component={Logout} />
+                  {/* <Redirect from="/" to="/home" /> */}
+                  {!localStorage.getItem("admin") ? (
+                    <div>
+                      <Route
+                        path="/"
+                        exact
+                        component={() => <HomeScreen products={products} />}
+                      />
+                      <Route path="/product/:id" component={ProductScreen} />
+                      <Route
+                        path="/cart/:variant_id/:product_id/:title?"
+                        component={CartScreen}
+                      />
+                      <Route path="/cart" component={CartScreen} exact />
+                      <Route path="/checkout" component={Checkout} />
+                      <Route path="/orderstatus" component={OrderStatus} />
+                      <Route path="/logout" component={Logout} />
+                      {/* <Route path="/notfound" component={PageNotFound} /> */}
+                    </div>
+                  ) : (
+                    <Redirect to="/Admin" />
+                  )}
                 </Container>
               </main>
             )}

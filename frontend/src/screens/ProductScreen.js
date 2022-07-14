@@ -86,7 +86,7 @@ const ProductScreen = ({ history, match }) => {
               <h3 className="py-0 ">{product.title} {values.map((type) => `- ${type}  `)}</h3>
             </ListGroup.Item>
 
-            {/* <ListGroup.Item >Varient : {product.title}</ListGroup.Item> */}
+            <ListGroup.Item >Brand : {product.brand}</ListGroup.Item>
 
             <ListGroup.Item>SKU:{product.sku}</ListGroup.Item>
 

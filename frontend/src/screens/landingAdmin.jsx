@@ -9,12 +9,6 @@ import Login from "./login";
 import PageNotFound from "./notfound";
 
 const AdminLanding = () => {
-  // const { cust_id } = useLocation();
-
-  // useEffect(() => {
-  //   console.log(cust_id);
-
-  // }, []);
 
   return (
     <>
@@ -29,7 +23,7 @@ const AdminLanding = () => {
               <Route path="/Admin/analysis" component={Analysis} />
               {/* <Redirect to='/wrong' /> */}
             </div>
-          ) : <Redirect to ="/login"/>}
+          ) : <Redirect to ="/"/>}
         </Container>
       </main>
     </>

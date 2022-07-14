@@ -318,7 +318,7 @@ const SignUp = () => {
 
                   <div className="form-group">
                     <button className="btn btn-primary btn-block" type="submit">
-                      Login
+                      Signup
                     </button>
                   </div>
                 </form>
