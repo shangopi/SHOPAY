@@ -27,7 +27,10 @@ const ProductScreen = ({ history, match }) => {
       })
       .then((response) => {
         setProduct(response.data);
-        setAttributeList(response.data.customAttribute);
+        if (response.data.customAttribute) {
+          setAttributeList(response.data.customAttribute);
+        }
+       
 
 
         axios
@@ -89,7 +92,7 @@ const ProductScreen = ({ history, match }) => {
 
             <ListGroup.Item>Weight :{product.weight}g</ListGroup.Item>
 
-            {custom_attribute.map((attribute) => (
+            {custom_attribute.length !==0 && custom_attribute.map((attribute) => (
               <ListGroup.Item key={attribute.attribute_id}>
                 {attribute.name}:{attribute.value}
               </ListGroup.Item>
