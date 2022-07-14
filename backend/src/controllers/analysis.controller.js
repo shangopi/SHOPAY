@@ -177,7 +177,10 @@ exports.QuarterlyReport = (req, res) => {
                 res.status(500).send({
                     message: "Error in Finding records for year " + req.query.id
                 });}
-        res.send(data);
+            else{
+                res.send(data);
+            }
+        
     });
 
 }

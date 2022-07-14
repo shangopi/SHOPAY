@@ -44,6 +44,7 @@ Product.getCustomAttribute = (product_id, result) => {
             result(null, err);
             // return;
         }
+      
         if (res.length) {
             result(null, res);
             // return res;
