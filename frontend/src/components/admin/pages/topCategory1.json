@@ -1,6 +1,0 @@
-[
-    {"cid" : "1" , "categoryName":"Categ1" , "order": 50},
-    {"cid" : "2" , "categoryName":"Categ2" , "order": 40},
-    {"cid" : "3" , "categoryName":"Categ3" , "order": 30},
-    {"cid" : "4" , "categoryName":"Categ4" , "order": 20}
-]

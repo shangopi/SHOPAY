@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import dummydata from './salesReport1.json';
 import { Button, Table, Form, Col, Row } from "react-bootstrap";
-
+import axios from 'axios';
 const Quartly = () => {
-    const [products, setProducts] = useState(dummydata);
+    const [products, setProducts] = useState([]);
     const [order, setOrder] = useState("ASC");
     const [year, setyear] = useState("");
     const [isSelected, setisSelected] = useState(false);
@@ -23,11 +22,27 @@ const Quartly = () => {
 
     const changeYear = (e) => {
         if (e == "0") {
+            console.log("select year zero");
             setyear();
             setisSelected(false);
+            setProducts([]);
+            
+        }else{
+            setyear(e);
+            setisSelected(true);
+            axios
+            .get(
+                `http://localhost:3001/api/analysis/QuarterlyReport/?year=${e}`
+            )
+            .then((res) => {
+                console.log(res.data);
+                setProducts(res.data);
+            })
+            .catch((err) => {
+                console.log("err = ", err);
+            });
         }
-        setyear(e);
-        setisSelected(true);
+        
     }
 
 
@@ -43,7 +58,6 @@ const Quartly = () => {
                             <option value="0"> Select Year</option>
                             <option value="2022"> 2022</option>
                             <option value="2021"> 2021</option>
-                            <option value="2020"> 2020</option>
                         </select>
                     </Col>
                 </Row>
@@ -54,24 +68,23 @@ const Quartly = () => {
             <Table striped bordered hover>
                 <thead>
                     <tr>
-                        <th >Product Name</th>
-                        <th onClick={() => sorting("q1")}>Q1 <i class="fas fa-sort"></i> </th>
-                        <th onClick={() => sorting("q2")}>Q2<i class="fas fa-sort"></i></th>
-                        <th onClick={() => sorting("q3")}>Q3<i class="fas fa-sort"></i></th>
-                        <th onClick={() => sorting("q4")}>Q4<i class="fas fa-sort"></i></th>
-                        <th onClick={() => sorting("qt")}>Total Count<i class="fas fa-sort"></i></th>
+                        <th>Product Name</th>
+                        <th onClick={() => sorting("Q1")}>Q1 <i className="fas fa-sort"></i> </th>
+                        <th onClick={() => sorting("Q2")}>Q2<i className="fas fa-sort"></i></th>
+                        <th onClick={() => sorting("Q3")}>Q3<i className="fas fa-sort"></i></th>
+                        <th onClick={() => sorting("Q4")}>Q4<i className="fas fa-sort"></i></th>
+                        <th onClick={() => sorting("total")}>Total Count<i className="fas fa-sort"></i></th>
                     </tr>
                 </thead>
                 <tbody>
                     {products.length > 0 && products.map((product, inde) =>
                         <tr key={inde}>
-                            <td>{product.pname}</td>
-                            <td>{product.q1}</td>
-                            <td>{product.q2}</td>
-                            <td>{product.q3}</td>
-                            <td>{product.q4}</td>
-                            <td>{product.qt}</td>
-                            {/* <td><Button variant="primary" type="submit">View</Button></td> */}
+                            <td>{product.title}</td>
+                            <td>{product.Q1 == null ? 0 : product.Q1}</td>
+                            <td>{product.Q2 == null ? 0 : product.Q2}</td>
+                            <td>{product.Q3 == null ? 0 : product.Q3}</td>
+                            <td>  {product.Q4 == null ? 0 : product.Q4}</td>
+                            <td>{product.total == null ? 0 : product.total}</td>
                         </tr>
                     )}
                 </tbody>
