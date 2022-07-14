@@ -11,6 +11,7 @@ exports.getProductByID = (req, res) => {
     
 
     product_model.getProductByID(req.query.id, (err, data) => {
+        let id =req.query.id;
         if (err)
             if (err.kind === "not_found") {
                 res.status(404).send({
@@ -27,9 +28,20 @@ exports.getProductByID = (req, res) => {
             const func = (err, data1) => {
                 if (err)
                     if (err.kind === "not_found") {
-                        res.status(404).send({
-                            message: `Not found custom Attribute with id ${id}.`
+                        const new_product = new product_model({
+                            product_id: data[0].product_id,
+                            sku: data[0].sku,
+                            title: data[0].title,
+                            weight: data[0].weight,
+                            default_var_id: data[0].default_varient_id,
+                            brand: data[0].brand,
+                            image : data[0].image,
+                            default_var_price : data[0].price,
+                            default_var_count : data[0].count,
+                            description : data[0].description
                         });
+                        
+                        res.send(new_product);
                     }
                     else {
                         res.status(500).send({
