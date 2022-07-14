@@ -156,7 +156,7 @@ const ProductScreen = ({ history, match }) => {
                         value={qty}
                         onChange={(e) => setQty(e.target.value)}
                       >
-                        {[...Array(currentVariant.count).keys()].map((x) => (
+                        {[...Array(10).keys()].map((x) => (
                           <option key={x + 1} value={x + 1}>
                             {x + 1}
                           </option>

@@ -35,7 +35,7 @@ const OrderStatus = ({ match }) => {
         >
           <RotateSpinner size={50} color="#5A2675" loading={true} />
         </div>
-      ) : 1 === 1 ? (
+      ) : state ? (
         <div className="d-flex align-items-center justify-content-center">
           <Card className="col-md-8 col-lg-6 shadow-lg py-3">
             <FontAwesomeIcon color="green" icon={faCheckCircle} size="4x" />
@@ -128,7 +128,7 @@ const OrderStatus = ({ match }) => {
               {state[1].map((item) => (
                 <div
                   className="row px-3 d-flex justify-content-between"
-                  key={item.variant_id}
+                  key={item.name}
                 >
                   <div>{item.name}</div>
                   <div className="text-end font-weight-bold">
@@ -152,7 +152,7 @@ const OrderStatus = ({ match }) => {
           </Card>
         </div>
       ) : (
-        <Redirect to="/" />
+        <Redirect to="/checkout" />
       )}
     </>
   );

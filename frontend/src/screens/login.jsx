@@ -27,6 +27,7 @@ const Login = () => {
   };
 
   useEffect(() => {
+    localStorage.removeItem("cartItems");
     setTimeout(function () {
       setShowElement(false);
     }, 500);

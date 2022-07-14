@@ -12,8 +12,8 @@ const User = function (user) {
     this.city = user.city,
     this.zip_code = user.zip_code,
     this.district = user.district,
-    this.password  = user.password,
-    this.role = user.role
+    this.password  = user.password
+    // this.role = user.role
 };
 
 //register
