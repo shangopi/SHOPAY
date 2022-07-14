@@ -7,6 +7,7 @@ import {
   Button,
   Accordion,
   Form,
+  Dropdown,
 } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSquareCaretDown } from "@fortawesome/free-solid-svg-icons";
@@ -24,6 +25,7 @@ import { Menu } from "@material-ui/icons";
 import axios from "axios";
 import config from "../config/config.json";
 import Product from "./Product";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   menuSliderContainer: {
@@ -48,6 +50,7 @@ const Header = ({ allProducts, setProducts }) => {
   const [listItems, setListItems] = useState([]);
   const [subCatList, setSubCatList] = useState([]);
   const [searchBar, setSearchBar] = useState("");
+  const { cartItems } = useSelector((state) => state.cart);
 
   useEffect(() => {
     axios
@@ -210,11 +213,13 @@ const Header = ({ allProducts, setProducts }) => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ml-auto">
-              <LinkContainer className="text-center" to="/cart">
+              <LinkContainer className="text-center " to="/cart">
                 <Nav.Link>
-                  <i className="fas fa-shopping-cart"></i> Cart
+                  <i className="fas fa-shopping-cart"></i><span className="bg-danger rounded" style={{padding : "2px"}}>{cartItems.length}</span>
+                  
                 </Nav.Link>
               </LinkContainer>
+
               {!localStorage.getItem("authDetails") ? (
                 <LinkContainer className="text-center" to="/login">
                   <Nav.Link>
@@ -222,11 +227,18 @@ const Header = ({ allProducts, setProducts }) => {
                   </Nav.Link>
                 </LinkContainer>
               ) : (
-                <LinkContainer className="text-center" to="/logout">
-                  <Nav.Link>
-                    <i className="fas fa-lock"></i> Logout
-                  </Nav.Link>
-                </LinkContainer>
+                <>
+                  <LinkContainer className="text-center" to="/myorders">
+                    <Nav.Link>
+                       My Orders
+                    </Nav.Link>
+                  </LinkContainer>
+                  <LinkContainer className="text-center" to="/logout">
+                    <Nav.Link>
+                      <i className="fas fa-lock"></i> Logout
+                    </Nav.Link>
+                  </LinkContainer>
+                </>
               )}
             </Nav>
           </Navbar.Collapse>
