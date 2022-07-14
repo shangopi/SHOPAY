@@ -4,8 +4,9 @@ import { Button, Form, Row } from "react-bootstrap";
 import axios from "axios";
 
 import { districtList } from "../constants/districts";
+import { toast } from "react-toastify";
 
-const CheckoutForm = ({ handleDeliveryDays, handleSubmit}) => {
+const CheckoutForm = ({ handleDeliveryDays, handleSubmit }) => {
   const [checked, setChecked] = useState("");
   const [deliveryMethod, setDeliveryMethod] = useState("pickup/delivery");
   const [district, setDistrict] = useState("Jaffna");
@@ -23,13 +24,15 @@ const CheckoutForm = ({ handleDeliveryDays, handleSubmit}) => {
     district: authDetails.district,
     zip_code: authDetails.zip_code,
   };
+  const cardDetails = { cardNo: "", month: "", year: "", cvc: "" };
 
   const orderNonUser = {};
 
   useEffect(() => {
     // console.log("auth", authDetails);
     // console.log("cart", cartItems);
-  }, []);
+    console.log(cardDetails);
+  }, [cardDetails]);
 
   const handleDistrict = (e) => {
     e.preventDefault();
@@ -41,100 +44,129 @@ const CheckoutForm = ({ handleDeliveryDays, handleSubmit}) => {
     }
   };
 
-  const handleSubmits = async(e) => {
+  const checkCardDetails = () => {
+    if (checked === "OP") {
+      console.log("card", cardDetails);
+      if (
+        parseInt(cardDetails.cardNo.length) === 16 &&
+        1 <= parseInt(cardDetails.month) && parseInt(cardDetails.month)  <= 12 &&
+        2022 <= parseInt(cardDetails.year) && parseInt(cardDetails.year)  <= 2030 &&
+        parseInt(cardDetails.cvc.length) === 3
+      ) {
+        return true;
+      }
+      return false;
+    }else{
+      return true;
+    }
+
+  };
+
+  const handleSubmits = async (e) => {
     e.preventDefault();
-    let variant_arr = "";
-    let product_arr = "";
-    let quantity_arr = "";
-    let price_arr = "";
-    cartItems.map((item) => {
-      variant_arr += String(item.variant) + ",";
-      product_arr += String(item.product) + ",";
-      quantity_arr += String(item.qty) + ",";
-      price_arr += String(item.price) + ",";
-    });
+    if (checkCardDetails()) {
+      let variant_arr = "";
+      let product_arr = "";
+      let quantity_arr = "";
+      let price_arr = "";
+      cartItems.map((item) => {
+        variant_arr += String(item.variant) + ",";
+        product_arr += String(item.product) + ",";
+        quantity_arr += String(item.qty) + ",";
+        price_arr += String(item.price) + ",";
+      });
 
-    let total = 0;
-    for (let index = 0; index < cartItems.length; index++) {
-      const element = cartItems[index];
-      total += element.price * element.qty;
-    }
-
-    let url = "";
-
-    if (!isLogged) {
-      url = "createOrderForNonUser";
-      // handleUrl("createOrderForNonUser")
-      orderNonUser.is_user = "No";
-      orderNonUser.inp_name = e.target.firstname.value;
-      orderNonUser.lastname = e.target.lastname.value;
-      orderNonUser.email = e.target.email.value;
-      orderNonUser.phone = e.target.phone.value;
-      orderNonUser.delivery_method = deliveryMethod;
-      orderNonUser.payment_method = checked;
-      orderNonUser.variant_arr = variant_arr;
-      orderNonUser.product_arr = product_arr;
-      orderNonUser.quantity_arr = quantity_arr;
-      orderNonUser.price_arr = price_arr;
-      orderNonUser.total = total;
-
-      if (deliveryMethod !== "pickup") {
-        orderNonUser.address_line1 = e.target.address_line1.value;
-        orderNonUser.address_line2 = e.target.address_line2.value;
-        orderNonUser.address_line3 = e.target.address_line3.value;
-        orderNonUser.city = e.target.city.value;
-        orderNonUser.district = district;
-        orderNonUser.zip_code = e.target.zip_code.value;
-      } else {
-        orderNonUser.address_line1 = "";
-        orderNonUser.address_line2 = "";
-        orderNonUser.address_line3 = "";
-        orderNonUser.city = "";
-        orderNonUser.district = "";
-        orderNonUser.zip_code = "";
+      let total = 0;
+      for (let index = 0; index < cartItems.length; index++) {
+        const element = cartItems[index];
+        total += element.price * element.qty;
       }
-    } else {
-      url = "createOrderForUser";
-      // handleUrl("createOrderForUser")
-      state.delivery_method = deliveryMethod;
-      state.payment_method = checked;
-      state.is_user = "Yes";
-      state.user_id = authDetails.cust_id;
-      state.first_name = authDetails.first_name;
-      state.variant_arr = variant_arr;
-      state.product_arr = product_arr;
-      state.quantity_arr = quantity_arr;
-      state.price_arr = price_arr;
-      state.total = total;
-      state.telephone = authDetails.telephone;
-      state.email= authDetails.email;
 
-      if (deliveryMethod !== "pickup") {
-        state.address_line1 = e.target.address_line1.value;
-        state.address_line2 = e.target.address_line2.value;
-        state.address_line3 = e.target.address_line3.value;
-        state.city = e.target.city.value;
-        state.district = district;
-        state.zip_code = e.target.zip_code.value;
+      let url = "";
+
+      if (!isLogged) {
+        url = "createOrderForNonUser";
+        // handleUrl("createOrderForNonUser")
+        orderNonUser.is_user = "No";
+        orderNonUser.inp_name = e.target.firstname.value;
+        orderNonUser.lastname = e.target.lastname.value;
+        orderNonUser.email = e.target.email.value;
+        orderNonUser.phone = e.target.phone.value;
+        orderNonUser.delivery_method = deliveryMethod;
+        orderNonUser.payment_method = checked;
+        orderNonUser.variant_arr = variant_arr;
+        orderNonUser.product_arr = product_arr;
+        orderNonUser.quantity_arr = quantity_arr;
+        orderNonUser.price_arr = price_arr;
+        orderNonUser.total = total;
+
+        if (deliveryMethod !== "pickup") {
+          orderNonUser.address_line1 = e.target.address_line1.value;
+          orderNonUser.address_line2 = e.target.address_line2.value;
+          orderNonUser.address_line3 = e.target.address_line3.value;
+          orderNonUser.city = e.target.city.value;
+          orderNonUser.district = district;
+          orderNonUser.zip_code = e.target.zip_code.value;
+        } else {
+          orderNonUser.address_line1 = "";
+          orderNonUser.address_line2 = "";
+          orderNonUser.address_line3 = "";
+          orderNonUser.city = "";
+          orderNonUser.district = "";
+          orderNonUser.zip_code = "";
+        }
       } else {
+        url = "createOrderForUser";
+        // handleUrl("createOrderForUser")
+        state.delivery_method = deliveryMethod;
+        state.payment_method = checked;
+        state.is_user = "Yes";
+        state.user_id = authDetails.cust_id;
+        state.first_name = authDetails.first_name;
+        state.variant_arr = variant_arr;
+        state.product_arr = product_arr;
+        state.quantity_arr = quantity_arr;
+        state.price_arr = price_arr;
+        state.total = total;
+        state.telephone = authDetails.telephone;
+        state.email = authDetails.email;
+
+        if (deliveryMethod !== "pickup") {
+          state.address_line1 = e.target.address_line1.value;
+          state.address_line2 = e.target.address_line2.value;
+          state.address_line3 = e.target.address_line3.value;
+          state.city = e.target.city.value;
+          state.district = district;
+          state.zip_code = e.target.zip_code.value;
+        } else {
+        }
       }
-    }
 
-    console.log("submitted..");
-    console.log("state", state);
-    console.log("nonuser", orderNonUser);
+      console.log("submitted..");
+      console.log("state", state);
+      console.log("nonuser", orderNonUser);
 
-    let payload = [];
-    if (isLogged) {
-      payload = state
-      // setPayload(state)
+      let payload = [];
+      if (isLogged) {
+        payload = state;
+        // setPayload(state)
+      } else {
+        // setPayload(orderNonUser)
+        payload = orderNonUser;
+      }
+
+      await handleSubmit(url, payload);
     } else {
-      // setPayload(orderNonUser)
-      payload = orderNonUser;
+      toast.error("Enter Valid Card Details", {
+        toastId:"1",
+        position: "top-right",
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        progress: 0,
+      });
     }
-
-    await handleSubmit(url,payload)
-
   };
 
   return (
@@ -314,22 +346,46 @@ const CheckoutForm = ({ handleDeliveryDays, handleSubmit}) => {
           <Row>
             <Form.Group className="mb-3 col-md-6" controlId="formBasicCardNum">
               <Form.Label>Credit Card Number</Form.Label>
-              <Form.Control type="text" placeholder="0000-0000-0000-0000" />
+              <Form.Control
+                type="number"
+                placeholder="0000 0000 0000 0000"
+                required
+                defaultValue={cardDetails.cardNo}
+                onChange={(e) => (cardDetails.cardNo = e.target.value)}
+              />
             </Form.Group>
 
             <Form.Group className="mb-3 col-md-2" controlId="formBasicMonth">
               <Form.Label>E.Month</Form.Label>
-              <Form.Control type="text" placeholder="11" />
+              <Form.Control
+                type="number"
+                placeholder="11"
+                required
+                defaultValue={cardDetails.month}
+                onChange={(e) => (cardDetails.month = e.target.value)}
+              />
             </Form.Group>
 
             <Form.Group className="mb-3 col-md-2" controlId="formBasicYear">
               <Form.Label>E.Year</Form.Label>
-              <Form.Control type="text" placeholder="2023" />
+              <Form.Control
+                type="number"
+                placeholder="2023"
+                required
+                defaultValue={cardDetails.year}
+                onChange={(e) => (cardDetails.year = e.target.value)}
+              />
             </Form.Group>
 
             <Form.Group className="mb-3 col-md-2" controlId="formBasicCVC">
               <Form.Label>CVC</Form.Label>
-              <Form.Control type="text" placeholder="676" />
+              <Form.Control
+                type="number"
+                placeholder="676"
+                required
+                defaultValue={cardDetails.cvc}
+                onChange={(e) => (cardDetails.cvc = e.target.value)}
+              />
             </Form.Group>
           </Row>
         )}
