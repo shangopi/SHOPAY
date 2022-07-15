@@ -16,18 +16,18 @@ const Header = () => {
             <Nav className='ml-auto'>
               <LinkContainer to='/Admin/analysis'>
                 <Nav.Link>
-                  <i className='fas fa-shopping-cart'></i> Analysising
+                <i class="fas fa-chart-bar"></i> Analysising
                 </Nav.Link>
               </LinkContainer>
               <LinkContainer to='/Admin/report'>
                 <Nav.Link>
-                  <i className='fas fa-shopping-cart'></i> Quartly Report
+                  <i className='fas fa-calendar-day'></i> Quartly Report
                 </Nav.Link>
               </LinkContainer>
              
               <LinkContainer to='/Admin/customer'>
                 <Nav.Link>
-                  <i className='fas fa-shopping-cart'></i> Customer Detail
+                  <i className='fas fa-users'></i> Customer Detail
                 </Nav.Link>
               </LinkContainer>
 

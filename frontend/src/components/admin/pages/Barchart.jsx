@@ -85,7 +85,6 @@ const ChartView1 = () => {
             .catch((err) => {
                 setisError(true);
                 seterr("Your input date is incorrect / No orders available");
-                console.log("err = ", err);
             });
 
     };

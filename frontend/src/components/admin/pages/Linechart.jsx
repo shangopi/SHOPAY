@@ -47,7 +47,6 @@ const ChartView = () => {
           .get(`http://localhost:3001/api/product_page/getAllProducts`)
           .then((res) => {
             setProducts(res.data);
-            console.log("all products= ", res.data);
           })
           .catch((err) => console.log(err));
       }, []);
@@ -62,7 +61,6 @@ const ChartView = () => {
                 `http://localhost:3001/api/analysis/BestTimeForProduct?id=${product}`
             )
             .then((res) => {
-                console.log(res.data);
                 seterror("");
                 setisError(false);
                 res.data.map(p => { setLabels(prev => [...prev, p.month]) });
