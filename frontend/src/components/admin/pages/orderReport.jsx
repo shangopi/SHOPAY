@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Form, Button, Row, Col, Table, Modal, Alert } from "react-bootstrap";
 import axios from "axios";
+import { log } from "joi-browser";
 const Customer = () => {
     const [data, setData] = useState([]);
     const [customerid, setcustomerid] = useState("");
     const [customerArr, setCustomerArr] = useState([]);
     const [show, setShow] = useState(false);
     const [orderDetail, setOrderDetail] = useState({})
-
-
+    const [allCustomerArr, setAllCustomerArr] = useState([]);
     const handleClose = () => setShow(false);
-
 
     const handleShow = (orderid) => {
         axios
@@ -22,7 +21,6 @@ const Customer = () => {
         setShow(true);
     };
 
-    console.log("order details ", orderDetail);
 
     const [IsExist, setIsExist] = useState(false);
 
@@ -31,37 +29,38 @@ const Customer = () => {
             .get(`http://localhost:3001/api/analysis/getAllCustomerDetails`)
             .then((res) => {
                 setData(res.data);
+                setAllCustomerArr(res.data);
                 setCustomerArr(res.data);
-                console.log("all customers= ", res.data);
             })
             .catch((err) => console.log(err));
     }, []);
 
     const handleCustomerId = (e) => {
-        console.log(e.target.value);
         setcustomerid(e.target.value);
-        console.log("all customers = ", data);
-        console.log("id = ", e.target.value);
-        const customerArray = data.filter((c) => c.customer_id == e.target.value);
-        if (customerArray.length === 0) {
-            setCustomerArr([]);
-            setIsExist(false);
+        if (e.target.value == "") {
+            setCustomerArr(allCustomerArr);
         } else {
-            console.log("customerArray = ", customerArray);
-            setCustomerArr(customerArray);
-            setIsExist(true);
+            const customerArray = data.filter((c) => c.customer_id == e.target.value);
+            if (customerArray.length === 0) {
+                setCustomerArr([]);
+                setIsExist(false);
+            } else {
+                setCustomerArr(customerArray);
+                setIsExist(true);
 
-            axios
-                .get(
-                    `http://localhost:3001/api/analysis/getCustomerDetails?id=${e.target.value}`
-                )
-                .then((res) => {
-                    console.log("res data = ", res.data);
-                })
-                .catch((err) => {
-                    console.log("err = ", err);
-                });
+                axios
+                    .get(
+                        `http://localhost:3001/api/analysis/getCustomerDetails?id=${e.target.value}`
+                    )
+                    .then((res) => {
+                        console.log("res data = ", res.data);
+                    })
+                    .catch((err) => {
+                        console.log("err = ", err);
+                    });
+            }
         }
+
     };
 
     const handleStatus = (e, order_id) => {
@@ -76,7 +75,16 @@ const Customer = () => {
         } else {
             status = "not match";
         }
-
+        // axios
+        //     .post(
+        //         `http://localhost:3001/api/order/orderStateChange/?id=${order_id}&state=${e}`
+        //     )
+        //     .then((res) => {
+        //         console.log(res.data);
+        //     })
+        //     .catch((err) => {
+        //         console.log("err = ", err);
+        //     });
         console.log(status);
         console.log(order_id);
     };
@@ -314,7 +322,7 @@ const Customer = () => {
                                 />
                             </Col>
                         </Row>
-                       
+
 
 
                     </Form>
