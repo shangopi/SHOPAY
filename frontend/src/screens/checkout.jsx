@@ -15,7 +15,7 @@ const Checkout = ({ history, match }) => {
   const [cart_dup, setCart_dup] = useState();
 
   useEffect(() => {
-    handleDeliveryDays(authDetails.district === "Colombo" ? 3 : 5);
+    // handleDeliveryDays(authDetails.district === "Colombo" ? 3 : 5);
     let total = 0;
     for (let index = 0; index < cartItems.length; index++) {
       const element = cartItems[index];
