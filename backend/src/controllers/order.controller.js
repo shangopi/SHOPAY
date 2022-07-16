@@ -169,4 +169,29 @@ exports.getOrderByID = (req, res) => {
     });
 
 }
+exports.setState = (req, res) => {
+    if (!req.body) {
+        res.status(400).send({
+            message: "Content can not be empty!",
+        });
+    }
+
+    order_model.setState(req.query.id, (err, data) => {
+        if (err)
+            if (err.kind === "not_found") {
+                res.status(404).send({
+                    message: `Not found order with id ${req.query.id}.`
+                });
+            } else {
+                res.status(500).send({
+                    message: "Error order with id " + req.query.id
+                });}
+       else{
+        res.send(data);
+       }
+    });
+
+}
+
+
 
