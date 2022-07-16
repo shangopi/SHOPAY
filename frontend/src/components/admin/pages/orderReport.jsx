@@ -9,6 +9,8 @@ const Customer = () => {
     const [show, setShow] = useState(false);
     const [orderDetail, setOrderDetail] = useState({})
     const [allCustomerArr, setAllCustomerArr] = useState([]);
+    const [orderStatus, setorderStatus] = useState()
+
     const handleClose = () => setShow(false);
 
     const handleShow = (orderid) => {
@@ -64,29 +66,27 @@ const Customer = () => {
     };
 
     const handleStatus = (e, order_id) => {
-        console.log(e);
-        let status = e;
-        if (status == "Ordered") {
-            status = "shipped";
-            console.log("1");
-        } else if (status == "shipped") {
-            status = "delivered";
-            console.log("2");
-        } else {
-            status = "not match";
-        }
-        // axios
-        //     .post(
-        //         `http://localhost:3001/api/order/orderStateChange/?id=${order_id}&state=${e}`
-        //     )
-        //     .then((res) => {
-        //         console.log(res.data);
-        //     })
-        //     .catch((err) => {
-        //         console.log("err = ", err);
-        //     });
-        console.log(status);
-        console.log(order_id);
+
+        axios
+            .get(
+                `http://localhost:3001/api/order/updateState?id=${order_id}`
+            )
+            .then((res) => {
+                console.log(res.data);
+            })
+            .catch((err) => {
+                console.log("err = ", err);
+            });
+
+
+        axios
+            .get(`http://localhost:3001/api/analysis/getAllCustomerDetails`)
+            .then((res) => {
+                setData(res.data);
+                setAllCustomerArr(res.data);
+                setCustomerArr(res.data);
+            })
+            .catch((err) => console.log(err));
     };
 
     return (
@@ -309,19 +309,7 @@ const Customer = () => {
                                 />
                             </Col>
                         </Row>
-                        <Row className="align-items-center mt-2">
-                            <Col className="text-right">
-                                <Form.Label>Products</Form.Label>
-                            </Col>
-                            <Col>
-                                <Form.Control
-                                    type="text"
-                                    placeholder=" "
-                                    // value={orderDetail.products.map(p=> p.title)}
-                                    readOnly
-                                />
-                            </Col>
-                        </Row>
+
 
 
 
