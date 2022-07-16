@@ -1,37 +1,89 @@
+
 # SHOPAY
-E - Commerce Platform...
+Single Vendor E-Commerce Platform
 
-frontend Folder-contain react js codes
-backend Folder-contain all backend codes
-
+This project is for CS3042 - Database Systems
 
 
-used theme- https://bootswatch.com/flatly/
 
-#steps to run frontend application
+## Features
 
-1.clone repo
-2.open terminal inside frontend folder
-3.run npm install
-4.run npm start
+- Register as user
+- Updating stock availability
+- Viewing Products
+- Adding/ Removing product to cart
+- Checkout the cart
+- Approving the order
+- Change own account details
+- Search and sort among products
+- Make use of the filter mechanism
+- Admin page for view statistics
 
-#steps to run backend application
-1.open terminal inside backend folder
-2.run npm install
-3.change your localhost configuration in backend/index.js
-4. run npm run devStart
+
+## Run Locally (Front-end)
+
+Clone the project
+
+```bash
+  https://github.com/shangopi/SHOPAY.git
+```
+
+Go to the project directory
+
+```bash
+  cd frontend
+```
+
+Install dependencies
+
+```bash
+  npm install
+```
+
+Start the server
+
+```bash
+  npm start
+```
+
+## Run Locally (Back-end)
+
+Clone the project
+
+```bash
+  https://github.com/shangopi/SHOPAY.git
+```
+
+Go to the project directory
+
+```bash
+  cd backend
+```
+
+Install dependencies
+
+```bash
+  npm install
+```
+
+Start the server
+
+```bash
+  npm run devStart
+```
+## Deployment
+
+Deployment link :
 
 
-Simply copy and paste react-bootstrap components from here https://react-bootstrap.github.io/components/alerts
+Dummy Admin credentials:
 
-About redux-https://redux.js.org/introduction/getting-started
+Dummy User credentials:
 
-Back end tutorial
-1)https://youtu.be/T8mqZZ0r-RA
-2)https://youtu.be/3YrOOia3-mo
-3)https://youtu.be/_S2GKnFpdtE
+## Authors
 
-DB is done and all back end configurations are done
-![e com](https://user-images.githubusercontent.com/60981141/163620542-6c8214db-f07a-435f-817f-7c9c32ed91e4.jpg)
+- [@Abinesh](https://github.com/abinesht)
+- [@Gopinath](https://github.com/shangopi)
+- [@Ashokkumar](https://github.com/Ashok12011234)
+- [@Kesavi](https://github.com/KesaviAravinthan)
 
-DB queries and DB exported file also there
