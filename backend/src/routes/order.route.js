@@ -12,5 +12,7 @@ router.get("/getCustomerOrder", order_Controller.getCustomerOrder);
 // order_id -> details of order
 router.get("/getOrderByID", order_Controller.getOrderByID);
 
+//change order state
+router.get("/updateState",order_Controller.setState);
 
 module.exports = router;

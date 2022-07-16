@@ -79,5 +79,20 @@ order.getOrderByID = (order_id, result) => {
        
     })
 }
+order.setState = (order_id, result) => {
+    const sqlSelect = "call change_state(@gfgf,?);"
+    db.query(sqlSelect, [order_id], (err, res) => {
+        if (err) {
+            result(null, err);
+        }
+        else if (res.length) {
+            result(null, res);
+        }
+        else {
+            result({ kind: "not_found" }, null);
+        }
+        console.log(result);
+    })
+}
 
 module.exports = order;
